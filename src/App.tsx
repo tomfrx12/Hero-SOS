@@ -81,6 +81,7 @@ function App() {
               <a
                 href="https://vite.dev/"
                 target="_blank"
+                rel="noreferrer"
                 className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
               >
                 <img className="h-[18px]" src={viteLogo} alt="" />
@@ -91,6 +92,7 @@ function App() {
               <a
                 href="https://react.dev/"
                 target="_blank"
+                rel="noreferrer"
                 className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
               >
                 <img className="size-[18px]" src={reactLogo} alt="" />
@@ -116,6 +118,7 @@ function App() {
               <a
                 href="https://github.com/vitejs/vite"
                 target="_blank"
+                rel="noreferrer"
                 className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
               >
                 <svg
@@ -132,6 +135,7 @@ function App() {
               <a
                 href="https://chat.vite.dev/"
                 target="_blank"
+                rel="noreferrer"
                 className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
               >
                 <svg
@@ -148,6 +152,7 @@ function App() {
               <a
                 href="https://x.com/vite_js"
                 target="_blank"
+                rel="noreferrer"
                 className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
               >
                 <svg
@@ -164,6 +169,7 @@ function App() {
               <a
                 href="https://bsky.app/profile/vite.dev"
                 target="_blank"
+                rel="noreferrer"
                 className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
               >
                 <svg
