@@ -9,62 +9,118 @@ function App() {
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+      <section
+        id="center"
+        className="flex grow flex-col items-center justify-center gap-[25px] max-lg:gap-[18px] max-lg:px-5 max-lg:pt-8 max-lg:pb-6"
+      >
+        <div className="relative">
+          <img
+            src={heroImg}
+            className="relative z-0 mx-auto w-[170px]"
+            width="170"
+            height="179"
+            alt=""
+          />
+          <img
+            src={reactLogo}
+            className="absolute inset-x-0 top-[34px] z-1 mx-auto h-7 [transform:perspective(2000px)_rotateZ(300deg)_rotateX(44deg)_rotateY(39deg)_scale(1.4)]"
+            alt="React logo"
+          />
+          <img
+            src={viteLogo}
+            className="absolute inset-x-0 top-[107px] z-0 mx-auto h-[26px] w-auto [transform:perspective(2000px)_rotateZ(300deg)_rotateX(40deg)_rotateY(39deg)_scale(0.8)]"
+            alt="Vite logo"
+          />
         </div>
         <div>
-          <h1>Get started</h1>
+          <h1 className="my-8 text-[56px] font-medium tracking-[-1.68px] text-text-h max-lg:my-5 max-lg:text-[36px]">
+            Get started
+          </h1>
           <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+            Edit{' '}
+            <code className="inline-flex rounded bg-code-bg px-2 py-1 font-mono text-[15px]/[135%] text-text-h">
+              src/App.tsx
+            </code>{' '}
+            and save to test{' '}
+            <code className="inline-flex rounded bg-code-bg px-2 py-1 font-mono text-[15px]/[135%] text-text-h">
+              HMR
+            </code>
           </p>
         </div>
         <button
           type="button"
-          className="counter"
+          className="mb-6 inline-flex rounded-[5px] border-2 border-transparent bg-accent-bg px-2.5 py-[5px] font-mono text-[16px] text-accent transition-[border-color] duration-300 hover:border-accent-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           onClick={() => setCount((count) => count + 1)}
         >
           Count is {count}
         </button>
       </section>
 
-      <div className="ticks"></div>
+      <div className="relative w-full before:absolute before:-top-[4.5px] before:left-0 before:border-[5px] before:border-transparent before:border-l-border before:content-[''] after:absolute after:-top-[4.5px] after:right-0 after:border-[5px] after:border-transparent after:border-r-border after:content-['']"></div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
+      <section
+        id="next-steps"
+        className="flex border-t border-border text-left max-lg:flex-col max-lg:text-center"
+      >
+        <div
+          id="docs"
+          className="flex-[1_1_0] border-r border-border p-8 max-lg:border-r-0 max-lg:border-b max-lg:px-5 max-lg:py-6"
+        >
+          <svg
+            className="mb-4 size-[22px]"
+            role="presentation"
+            aria-hidden="true"
+          >
             <use href="/icons.svg#documentation-icon"></use>
           </svg>
-          <h2>Documentation</h2>
+          <h2 className="mb-2 text-2xl/[118%] font-medium tracking-[-0.24px] text-text-h max-lg:text-[20px]">
+            Documentation
+          </h2>
           <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
+          <ul className="mt-8 flex list-none gap-2 p-0 max-lg:mt-5 max-lg:flex-wrap max-lg:justify-center">
+            <li className="max-lg:flex-[1_1_calc(50%-8px)]">
+              <a
+                href="https://vite.dev/"
+                target="_blank"
+                className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
+              >
+                <img className="h-[18px]" src={viteLogo} alt="" />
                 Explore Vite
               </a>
             </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
+            <li className="max-lg:flex-[1_1_calc(50%-8px)]">
+              <a
+                href="https://react.dev/"
+                target="_blank"
+                className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
+              >
+                <img className="size-[18px]" src={reactLogo} alt="" />
                 Learn more
               </a>
             </li>
           </ul>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
+        <div id="social" className="flex-[1_1_0] p-8 max-lg:px-5 max-lg:py-6">
+          <svg
+            className="mb-4 size-[22px]"
+            role="presentation"
+            aria-hidden="true"
+          >
             <use href="/icons.svg#social-icon"></use>
           </svg>
-          <h2>Connect with us</h2>
+          <h2 className="mb-2 text-2xl/[118%] font-medium tracking-[-0.24px] text-text-h max-lg:text-[20px]">
+            Connect with us
+          </h2>
           <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
+          <ul className="mt-8 flex list-none gap-2 p-0 max-lg:mt-5 max-lg:flex-wrap max-lg:justify-center">
+            <li className="max-lg:flex-[1_1_calc(50%-8px)]">
+              <a
+                href="https://github.com/vitejs/vite"
+                target="_blank"
+                className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
+              >
                 <svg
-                  className="button-icon"
+                  className="size-[18px] dark:brightness-200 dark:invert"
                   role="presentation"
                   aria-hidden="true"
                 >
@@ -73,10 +129,14 @@ function App() {
                 GitHub
               </a>
             </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
+            <li className="max-lg:flex-[1_1_calc(50%-8px)]">
+              <a
+                href="https://chat.vite.dev/"
+                target="_blank"
+                className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
+              >
                 <svg
-                  className="button-icon"
+                  className="size-[18px] dark:brightness-200 dark:invert"
                   role="presentation"
                   aria-hidden="true"
                 >
@@ -85,10 +145,14 @@ function App() {
                 Discord
               </a>
             </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
+            <li className="max-lg:flex-[1_1_calc(50%-8px)]">
+              <a
+                href="https://x.com/vite_js"
+                target="_blank"
+                className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
+              >
                 <svg
-                  className="button-icon"
+                  className="size-[18px] dark:brightness-200 dark:invert"
                   role="presentation"
                   aria-hidden="true"
                 >
@@ -97,10 +161,14 @@ function App() {
                 X.com
               </a>
             </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
+            <li className="max-lg:flex-[1_1_calc(50%-8px)]">
+              <a
+                href="https://bsky.app/profile/vite.dev"
+                target="_blank"
+                className="flex items-center gap-2 rounded-md bg-social-bg px-3 py-1.5 text-[16px] text-text-h no-underline transition-shadow duration-300 hover:shadow-social max-lg:w-full max-lg:justify-center"
+              >
                 <svg
-                  className="button-icon"
+                  className="size-[18px] dark:brightness-200 dark:invert"
                   role="presentation"
                   aria-hidden="true"
                 >
@@ -113,8 +181,11 @@ function App() {
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      <div className="relative w-full before:absolute before:-top-[4.5px] before:left-0 before:border-[5px] before:border-transparent before:border-l-border before:content-[''] after:absolute after:-top-[4.5px] after:right-0 after:border-[5px] after:border-transparent after:border-r-border after:content-['']"></div>
+      <section
+        id="spacer"
+        className="h-22 border-t border-border max-lg:h-12"
+      ></section>
     </>
   )
 }
