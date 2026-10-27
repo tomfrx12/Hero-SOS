@@ -1,1 +1,50 @@
 @import "tailwindcss";
+
+@layer base {
+    :root {
+        font-family: "Instrument Sans", sans-serif;
+        --color-rouge-alerte: #E10600;
+        --color-rouge-profond: #A30400;
+        --color-noir: #0B0B0C;
+        --color-graphite: #18181B;
+        --color-gris-texte: #4A4A52;
+        --color-gris-trait: #E4E4E7;
+        --color-fond-clair: #F4F4F5;
+    }
+
+    h1, h2 {
+        font-family: "Big Shoulders", sans-serif;
+        font-weight: 900;
+        font-style: normal;
+        text-transform: uppercase;
+    }
+
+    h1 {
+        font-size: 7rem;
+        line-height: 0.88;
+    }
+
+    h2 {
+        font-size: 4rem;
+        line-height: 0.92;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+        line-height: 1.10;
+    }
+
+    p {
+        font-size: 1rem;
+        line-height: 1.55;
+    }
+
+    button {
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    button:disabled {
+        cursor: not-allowed;
+    }
+}
