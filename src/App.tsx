@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ReactLenis } from 'lenis/react'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
@@ -8,6 +9,7 @@ function App() {
 
   return (
     <>
+      <ReactLenis root />
       <section
         id="center"
         className="flex grow flex-col items-center justify-center gap-[25px] max-lg:gap-[18px] max-lg:px-5 max-lg:pt-8 max-lg:pb-6"
