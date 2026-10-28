@@ -16,6 +16,11 @@
         font-family: "Instrument Sans", sans-serif;
     }
 
+    body {
+        background-color: #FFFFFF;
+        color: var(--color-noir);
+    }
+
     h1, h2 {
         font-family: "Big Shoulders", sans-serif;
         font-weight: 900;

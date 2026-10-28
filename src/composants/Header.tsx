@@ -36,7 +36,7 @@ export default function Header() {
                     {estConnecte ? (
                         <>
                             <Link to="/profil" className="font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white">Profil</Link>
-                            <Link to="/signaler-incident" className="rounded-md border border-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond">
+                            <Link to="/profil/signaler-incidents" className="rounded-md border border-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond">
                                 Signaler un incident
                             </Link>
                         </>
