@@ -7,7 +7,13 @@ import Inscription from './pages/Inscription'
 import MotDePasseOublie from './pages/MotDePasseOublie'
 import SuperHeros from './pages/SuperHeros'
 import SuperVilains from './pages/SuperVilains'
-import Profil from './pages/Profil'
+import ProfilLayout from './composants/ProfilLayout'
+import Profil from './pages/profil/Profil'
+import ProfilIncidents from './pages/profil/ProfilIncidents'
+import ProfilSignalerIncident from './pages/profil/ProfilSignalerIncident'
+import ProfilInformations from './pages/profil/ProfilInformations'
+import ProfilStatistiques from './pages/profil/ProfilStatistiques'
+import ProfilReputation from './pages/profil/ProfilReputation'
 import MentionsLegales from './pages/MentionsLegales'
 import DashboardAdmin from './pages/DashboardAdmin'
 
@@ -24,7 +30,14 @@ export default function App() {
             <Route path="/reinitialiser-le-mot-de-passe" element={<MotDePasseOublie />} />
             <Route path="/super-heros" element={<SuperHeros />} />
             <Route path="/super-vilains" element={<SuperVilains />} />
-            <Route path="/profil" element={<Profil />} />
+            <Route path="/profil" element={<ProfilLayout />}>
+              <Route index element={<Profil />} />
+              <Route path="incidents" element={<ProfilIncidents />} />
+              <Route path="signaler-incidents" element={<ProfilSignalerIncident />} />
+              <Route path="informations" element={<ProfilInformations />} />
+              <Route path="statistiques" element={<ProfilStatistiques />} />
+              <Route path="reputation" element={<ProfilReputation />} />
+            </Route>
             <Route path="/dashboard-admin" element={<DashboardAdmin />} />
           </Routes>
         </Layout>
