@@ -15,7 +15,12 @@ import ProfilInformations from './pages/profil/ProfilInformations'
 import ProfilStatistiques from './pages/profil/ProfilStatistiques'
 import ProfilReputation from './pages/profil/ProfilReputation'
 import MentionsLegales from './pages/MentionsLegales'
-import DashboardAdmin from './pages/DashboardAdmin'
+import AdminLayout from './composants/AdminLayout'
+import DashboardAdmin from './pages/admin/DashboardAdmin'
+import AdminIncidents from './pages/admin/AdminIncidents'
+import AdminIncident from './pages/admin/AdminIncident'
+import AdminUtilisateurs from './pages/admin/AdminUtilisateurs'
+import AdminFilms from './pages/admin/AdminFilms'
 
 export default function App() {
   return (
@@ -38,7 +43,13 @@ export default function App() {
               <Route path="statistiques" element={<ProfilStatistiques />} />
               <Route path="reputation" element={<ProfilReputation />} />
             </Route>
-            <Route path="/dashboard-admin" element={<DashboardAdmin />} />
+            <Route path="/dashboard-admin" element={<AdminLayout />}>
+              <Route index element={<DashboardAdmin />} />
+              <Route path="incidents" element={<AdminIncidents />} />
+              <Route path="incidents/:id" element={<AdminIncident />} />
+              <Route path="utilisateurs" element={<AdminUtilisateurs />} />
+              <Route path="films" element={<AdminFilms />} />
+            </Route>
           </Routes>
         </Layout>
     </>
