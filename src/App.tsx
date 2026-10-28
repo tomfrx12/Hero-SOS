@@ -8,6 +8,7 @@ import MotDePasseOublie from './pages/MotDePasseOublie'
 import SuperHeros from './pages/SuperHeros'
 import SuperVilains from './pages/SuperVilains'
 import Profil from './pages/Profil'
+import MentionsLegales from './pages/MentionsLegales'
 import DashboardAdmin from './pages/DashboardAdmin'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/connexion" element={<Connexion />} />
             <Route path="/inscription" element={<Inscription />} />
             <Route path="/reinitialiser-le-mot-de-passe" element={<MotDePasseOublie />} />
