@@ -29,7 +29,7 @@ export default function Footer() {
                     <Link to="/super-heros" className="text-gris-trait/70 transition-colors hover:text-white">Super Héros</Link>
                     <Link to="/super-vilains" className="text-gris-trait/70 transition-colors hover:text-white">Super Vilains</Link>
                     <Link to="/connexion" className="text-gris-trait/70 transition-colors hover:text-white">Connexion</Link>
-                    <Link to="/signaler-incident" className="text-gris-trait/70 transition-colors hover:text-white">Signaler un incident</Link>
+                    <Link to="/profil/signaler-incidents" className="text-gris-trait/70 transition-colors hover:text-white">Signaler un incident</Link>
                     <Link to="/mentions-legales" className="text-gris-trait/70 transition-colors hover:text-white">Mentions légales</Link>
                 </nav>
             </div>
