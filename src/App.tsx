@@ -1,6 +1,9 @@
 import { ReactLenis } from 'lenis/react'
 import { Route, Routes } from 'react-router'
 import Layout from './composants/Layout'
+import SessionProvider from './contexte/SessionProvider'
+import RouteProtegee from './composants/RouteProtegee'
+import RouteNonConnecte from './composants/RouteNonConnecte'
 import Index from './pages/Index'
 import Connexion from './pages/Connexion'
 import Inscription from './pages/Inscription'
@@ -26,32 +29,43 @@ export default function App() {
   return (
     <>
         <ReactLenis root />
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/mentions-legales" element={<MentionsLegales />} />
-            <Route path="/connexion" element={<Connexion />} />
-            <Route path="/inscription" element={<Inscription />} />
-            <Route path="/reinitialiser-le-mot-de-passe" element={<MotDePasseOublie />} />
-            <Route path="/super-heros" element={<SuperHeros />} />
-            <Route path="/super-vilains" element={<SuperVilains />} />
-            <Route path="/profil" element={<ProfilLayout />}>
-              <Route index element={<Profil />} />
-              <Route path="incidents" element={<ProfilIncidents />} />
-              <Route path="signaler-incidents" element={<ProfilSignalerIncident />} />
-              <Route path="informations" element={<ProfilInformations />} />
-              <Route path="statistiques" element={<ProfilStatistiques />} />
-              <Route path="reputation" element={<ProfilReputation />} />
-            </Route>
-            <Route path="/dashboard-admin" element={<AdminLayout />}>
-              <Route index element={<DashboardAdmin />} />
-              <Route path="incidents" element={<AdminIncidents />} />
-              <Route path="incidents/:id" element={<AdminIncident />} />
-              <Route path="utilisateurs" element={<AdminUtilisateurs />} />
-              <Route path="films" element={<AdminFilms />} />
-            </Route>
-          </Routes>
-        </Layout>
+        <SessionProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/super-heros" element={<SuperHeros />} />
+              <Route path="/super-vilains" element={<SuperVilains />} />
+
+              <Route element={<RouteNonConnecte />}>
+                <Route path="/connexion" element={<Connexion />} />
+                <Route path="/inscription" element={<Inscription />} />
+                <Route path="/reinitialiser-le-mot-de-passe" element={<MotDePasseOublie />} />
+              </Route>
+
+              <Route element={<RouteProtegee />}>
+                <Route path="/profil" element={<ProfilLayout />}>
+                  <Route index element={<Profil />} />
+                  <Route path="incidents" element={<ProfilIncidents />} />
+                  <Route path="signaler-incidents" element={<ProfilSignalerIncident />} />
+                  <Route path="informations" element={<ProfilInformations />} />
+                  <Route path="statistiques" element={<ProfilStatistiques />} />
+                  <Route path="reputation" element={<ProfilReputation />} />
+                </Route>
+              </Route>
+
+              <Route element={<RouteProtegee roles={["Administrateurs"]} />}>
+                <Route path="/dashboard-admin" element={<AdminLayout />}>
+                  <Route index element={<DashboardAdmin />} />
+                  <Route path="incidents" element={<AdminIncidents />} />
+                  <Route path="incidents/:id" element={<AdminIncident />} />
+                  <Route path="utilisateurs" element={<AdminUtilisateurs />} />
+                  <Route path="films" element={<AdminFilms />} />
+                </Route>
+              </Route>
+            </Routes>
+          </Layout>
+        </SessionProvider>
     </>
   )
 }
