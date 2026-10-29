@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import { Siren } from "lucide-react"
 import ChampAdresse, { type Adresse } from "../../composants/ChampAdresse"
+import IncidentsProches from "../../composants/IncidentsProches"
 import Bouton from "../../composants/ui/Bouton"
 import { appelApi } from "../../services/api"
 
@@ -125,6 +126,7 @@ export default function ProfilSignalerIncident() {
                     <fieldset>
                         <legend className={styleTitreBloc}>Lieu</legend>
                         <ChampAdresse onChoisir={setAdresse} />
+                        {adresse && <IncidentsProches key={`${adresse.latitude},${adresse.longitude}`} latitude={adresse.latitude} longitude={adresse.longitude} />}
                     </fieldset>
 
                     <fieldset>
