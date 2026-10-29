@@ -45,8 +45,6 @@ const stats = [
 ]
 
 // Données d'exemple en attendant l'API
-const categories = ["Tous", "Force", "Vitesse", "Tech", "Mystique"]
-
 const heros: { nom: string, initiales: string, photo?: string, pouvoir: string, ville: string, categorie: string, accent: string, stats: StatHeros[] }[] = [
     { nom: "Nova", initiales: "NV", pouvoir: "Énergie stellaire", ville: "La Gare", categorie: "Mystique", accent: "var(--color-cyan-neon)", stats: [{ valeur: "4,9", suffixe: "/5", libelle: "128 avis" }, { valeur: "312", libelle: "Missions réussies" }] },
     { nom: "Flamme Bleue", initiales: "FB", pouvoir: "Pyrokinésie", ville: "Les Docks", categorie: "Force", accent: "var(--color-rouge-alerte)", stats: [{ valeur: "4,7", suffixe: "/5", libelle: "96 avis" }, { valeur: "245", libelle: "Missions réussies" }] },
@@ -68,7 +66,6 @@ export default function Index() {
     })
 
     const [index, setIndex] = useState(0)
-    const [categorie, setCategorie] = useState("Tous")
     const total = incidents.length
 
     return (
@@ -139,7 +136,7 @@ export default function Index() {
                 </div>
             </section>
 
-            <section className="mx-auto max-w-6xl px-4 py-16 text-center md:py-24">
+            <section className="mx-auto max-w-6xl py-16 text-center md:py-24">
                 <h2 className="texte-chrome text-[clamp(2.5rem,5vw,4rem)]">QG des Héros</h2>
 
                 <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:mt-12 md:grid-cols-4">
@@ -152,31 +149,17 @@ export default function Index() {
                 </div>
             </section>
 
-            <section className="mx-auto max-w-6xl px-4 py-16 text-left md:py-24">
+            <section className="mx-auto max-w-6xl py-16 text-left md:py-24">
                 <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
                     <div>
                         <h2 className="mt-3 text-white">
                             Annuaire des <span className="text-rouge-alerte texte-glow-rouge">Héros</span>
                         </h2>
                     </div>
-
-                    <div className="flex flex-wrap gap-2">
-                        {categories.map((nom) => (
-                            <button
-                                key={nom}
-                                onClick={() => setCategorie(nom)}
-                                className={`rounded-full border px-4 py-1.5 text-xs font-bold italic uppercase tracking-wider transition-colors ${categorie === nom
-                                    ? "border-cyan-neon bg-cyan-neon text-noir shadow-[0_0_14px_color-mix(in_oklab,var(--color-cyan-neon)_45%,transparent)]"
-                                    : "border-gris-texte text-gris-trait/70 hover:border-cyan-neon"}`}
-                            >
-                                {nom}
-                            </button>
-                        ))}
-                    </div>
                 </div>
 
                 <div className="grille-heros mt-8 grid gap-5 md:mt-12 sm:grid-cols-2 lg:grid-cols-4">
-                    {heros.filter((h) => categorie === "Tous" || h.categorie === categorie).map((h) => (
+                    {heros.map((h) => (
                         <CarteHeros key={h.nom} {...h} />
                     ))}
                 </div>
@@ -187,7 +170,7 @@ export default function Index() {
                 </Link>
             </section>
 
-            <section className="degrade-bandeau trame-bandeau left-1/2 w-screen -translate-x-1/2 border-y-2 border-noir">
+            <section className="degrade-bandeau trame-bandeau left-1/2 w-screen -translate-x-1/2 border-y-2 border-noir -mb-11">
                 <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between md:px-10">
                     <div className="text-left">
                         <h2 className="ombre-bd text-[clamp(2rem,4vw,3rem)] text-white">Un vilain en vue ?</h2>

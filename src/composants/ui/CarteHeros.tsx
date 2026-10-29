@@ -53,7 +53,7 @@ export default function CarteHeros({ nom, photo, pouvoir, accent, stats }: Carte
                                 {stat.valeur}
                                 {stat.suffixe && <span className="text-base text-gris-trait/60">{stat.suffixe}</span>}
                             </span>
-                            <span className="mt-1 block text-xs text-gris-trait/60 transition-all duration-[450ms] group-hover:text-[0.6rem] group-hover:uppercase group-hover:tracking-[0.2em]">
+                            <span className="mt-1 block text-xs text-gris-trait/60 transition-all duration-450ms group-hover:text-[0.6rem] group-hover:uppercase group-hover:tracking-[0.2em]">
                                 {stat.libelle}
                             </span>
                         </div>

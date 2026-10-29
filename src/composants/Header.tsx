@@ -31,7 +31,7 @@ export default function Header() {
 
     return (
         <header className={`${estAccueil ? "fixed inset-x-0" : "sticky"} ${cache ? "-translate-y-full opacity-0" : "translate-y-0"} top-0 z-50 transition-[translate,opacity] duration-500 border-b border-rouge-alerte bg-noir/85 text-white shadow-[0_4px_24px_-6px_var(--color-rouge-alerte)] backdrop-blur-md`}>
-            <div className="mx-auto flex max-w-[80%] flex-wrap items-center justify-between px-4 py-3 md:px-8">
+            <div className="mx-auto flex max-w-[80%] flex-wrap items-center justify-between px-4 py-3 md:px-0">
                 <Link to="/" onClick={fermerMenu}>
                     <img src="/logo.webp" alt="Héros SOS" className="h-14 w-14 md:h-16 md:w-16" />
                 </Link>
@@ -53,9 +53,9 @@ export default function Header() {
 
                     {!chargement && utilisateur && (
                         <>
-                            <NavLink to="/profil" className={`${classeLien} font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white`}>Profil</Link>
+                            <NavLink to="/profil" className={`${classeLien} font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white`}>Profil</NavLink>
                             <button type="button" onClick={seDeconnecter}>Déconnexion</button>
-                            <Bouton to="/profil/signaler-incidents" className="rounded-md border border-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond" icone={Siren>
+                            <Bouton to="/profil/signaler-incidents" className="rounded-md border border-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond" icone={Siren}>
                                 Signaler un incident
                             </Bouton>
                         </>
