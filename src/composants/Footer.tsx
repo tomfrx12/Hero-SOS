@@ -1,10 +1,13 @@
 import { Link } from "react-router"
 import { Mail } from "lucide-react"
+import { useSession } from "../contexte/session"
 
 export default function Footer() {
+    const { utilisateur, chargement } = useSession()
+
     return (
         <footer className="mt-auto border-t-2 border-rouge-alerte bg-noir text-white">
-            <div className="mx-auto grid max-w-[80%] gap-10 px-4 py-12 text-left md:grid-cols-3 md:px-8">
+            <div className="mx-auto grid max-w-[80%] gap-10 px-4 py-12 text-left md:grid-cols-[1fr_2fr_1fr] md:px-8">
                 <div className="flex flex-col">
                     <Link to="/">
                         <img src="/logo.webp" alt="Héros SOS" className="h-40 w-40" />
@@ -28,8 +31,12 @@ export default function Footer() {
                     <span className="mb-1 font-display font-bold uppercase text-rouge-alerte">Navigation</span>
                     <Link to="/super-heros" className="text-gris-trait/70 transition-colors hover:text-white">Super Héros</Link>
                     <Link to="/super-vilains" className="text-gris-trait/70 transition-colors hover:text-white">Super Vilains</Link>
-                    <Link to="/connexion" className="text-gris-trait/70 transition-colors hover:text-white">Connexion</Link>
-                    <Link to="/profil/signaler-incidents" className="text-gris-trait/70 transition-colors hover:text-white">Signaler un incident</Link>
+                    {!chargement && utilisateur && (
+                        <Link to="/profil/signaler-incidents" className="text-gris-trait/70 transition-colors hover:text-white">Signaler un incident</Link>
+                    )}
+                    {!chargement && !utilisateur && (
+                        <Link to="/connexion" className="text-gris-trait/70 transition-colors hover:text-white">Connexion</Link>
+                    )}
                     <Link to="/mentions-legales" className="text-gris-trait/70 transition-colors hover:text-white">Mentions légales</Link>
                 </nav>
             </div>
