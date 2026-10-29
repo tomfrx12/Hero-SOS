@@ -12,6 +12,8 @@
     --color-cyan-neon: #00E5FF;
     --color-lavande: #B9B4D6;
     --color-nuit: #120E1A;
+    --color-violet-neon: #9B5CFF;
+    --color-ambre: #FFB020;
 }
 
 @layer base {
@@ -198,4 +200,60 @@
     text-transform: uppercase;
     letter-spacing: 0.2em;
     color: color-mix(in oklab, var(--color-lavande) 75%, transparent);
+}
+
+/* Section profils : cartes de héros qui se déploient au survol */
+
+@utility grille-heros {
+    & .carte-heros {
+        transition: height 450ms cubic-bezier(.22, 1, .36, 1), transform 450ms cubic-bezier(.22, 1, .36, 1),
+            box-shadow 450ms ease-out, border-color 450ms ease-out, filter 450ms ease-out;
+    }
+
+    &:has(.carte-heros:hover) .carte-heros:not(:hover) {
+        filter: brightness(.55) saturate(.7);
+    }
+
+    /* Dernière rangée (hors première) : la carte se déploie vers le haut */
+    @media (width >= 40rem) and (width < 64rem) {
+        & > :nth-child(2n+1):nth-last-child(-n+2):not(:nth-child(-n+2)) .carte-heros,
+        & > :nth-child(2n+1):nth-last-child(-n+2):not(:nth-child(-n+2)) ~ * .carte-heros {
+            top: auto;
+            bottom: 0;
+        }
+    }
+
+    @media (width >= 64rem) {
+        & > :nth-child(4n+1):nth-last-child(-n+4):not(:nth-child(-n+4)) .carte-heros,
+        & > :nth-child(4n+1):nth-last-child(-n+4):not(:nth-child(-n+4)) ~ * .carte-heros {
+            top: auto;
+            bottom: 0;
+        }
+    }
+}
+
+@utility carte-heros {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 13rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid color-mix(in oklab, var(--color-lavande) 18%, transparent);
+    background-color: var(--color-nuit);
+
+    &:hover {
+        z-index: 20;
+        height: 27rem;
+        transform: translateY(-6px) scale(1.02);
+        border-color: var(--accent);
+        box-shadow: 0 30px 60px color-mix(in oklab, var(--color-noir) 85%, transparent),
+            0 0 24px color-mix(in oklab, var(--accent) 25%, transparent);
+    }
+}
+
+@utility trame-points {
+    background-image: radial-gradient(circle, color-mix(in oklab, var(--color-fond-clair) 14%, transparent) 1.2px, transparent 1.6px);
+    background-size: 6px 6px;
+    mask-image: linear-gradient(to bottom, black 40%, transparent);
 }
