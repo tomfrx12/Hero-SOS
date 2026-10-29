@@ -257,3 +257,52 @@
     background-size: 6px 6px;
     mask-image: linear-gradient(to bottom, black 40%, transparent);
 }
+
+/* Bandeau d'appel à l'action */
+
+@utility degrade-bandeau {
+    background-image: linear-gradient(to right, var(--color-rouge-alerte), var(--color-rouge-profond));
+}
+
+@utility trame-bandeau {
+    position: relative;
+    isolation: isolate;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: radial-gradient(circle, color-mix(in oklab, var(--color-noir) 25%, transparent) 1.2px, transparent 1.6px);
+        background-size: 6px 6px;
+    }
+}
+
+@utility ombre-bd {
+    text-shadow: 3px 3px 0 var(--color-noir);
+}
+
+@utility bouton-bd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-fond-clair);
+    color: var(--color-noir);
+    font-family: "Big Shoulders", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--color-noir);
+    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+
+    &:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 var(--color-noir);
+    }
+
+    &:active {
+        transform: translate(4px, 4px);
+        box-shadow: 0 0 0 var(--color-noir);
+    }
+}

@@ -187,6 +187,17 @@ export default function Index() {
                 </Link>
             </section>
 
+            <section className="degrade-bandeau trame-bandeau left-1/2 w-screen -translate-x-1/2 border-y-2 border-noir">
+                <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 sm:flex-row sm:items-center sm:justify-between md:px-10">
+                    <div className="text-left">
+                        <h2 className="ombre-bd text-[clamp(2rem,4vw,3rem)] text-white">Un vilain en vue ?</h2>
+                        <p className="mt-1 text-sm! text-white/80">Signale-le maintenant, un héros arrive en quelques minutes.</p>
+                    </div>
+                    <Link to="/profil/signaler-incidents" className="bouton-bd w-full shrink-0 rounded-full px-7 py-3 text-lg sm:w-auto">
+                        Signaler un incident
+                    </Link>
+                </div>
+            </section>
         </>
     )
 }
