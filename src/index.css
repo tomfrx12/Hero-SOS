@@ -9,6 +9,11 @@
     --color-gris-texte: #4A4A52;
     --color-gris-trait: #E4E4E7;
     --color-fond-clair: #F4F4F5;
+    --color-cyan-neon: #00E5FF;
+    --color-lavande: #B9B4D6;
+    --color-nuit: #120E1A;
+    --color-violet-neon: #9B5CFF;
+    --color-ambre: #FFB020;
 }
 
 @layer base {
@@ -17,25 +22,26 @@
     }
 
     body {
-        background-color: #FFFFFF;
-        color: var(--color-noir);
+        background-color: var(--color-noir);
+        color: var(--color-fond-clair);
+        overflow-x: clip;
     }
 
-    h1, h2 {
+    h1, h2, h3 {
         font-family: "Big Shoulders", sans-serif;
         font-weight: 900;
-        font-style: normal;
+        font-style: italic;
         text-transform: uppercase;
     }
 
     h1 {
-        font-size: 7rem;
-        line-height: 0.88;
+        font-size: clamp(3.5rem, 10vw, 8rem);
+        line-height: 0.85;
     }
 
     h2 {
-        font-size: 4rem;
-        line-height: 0.92;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        line-height: 0.9;
     }
 
     h3 {
@@ -55,5 +61,248 @@
 
     button:disabled {
         cursor: not-allowed;
+    }
+}
+
+/* Direction artistique comics néon */
+
+@utility glow-rouge {
+    box-shadow: 0 0 12px color-mix(in oklab, var(--color-rouge-alerte) 70%, transparent),
+        0 0 32px color-mix(in oklab, var(--color-rouge-alerte) 35%, transparent);
+}
+
+@utility glow-clair {
+    box-shadow: 0 0 10px color-mix(in oklab, var(--color-fond-clair) 45%, transparent),
+        0 0 24px color-mix(in oklab, var(--color-fond-clair) 15%, transparent);
+}
+
+@utility texte-glow-rouge {
+    text-shadow: 0 0 18px color-mix(in oklab, var(--color-rouge-alerte) 80%, transparent),
+        0 0 42px color-mix(in oklab, var(--color-rouge-alerte) 40%, transparent);
+}
+
+@utility degrade-action {
+    background-image: linear-gradient(135deg, var(--color-rouge-alerte), var(--color-rouge-profond) 45%, var(--color-noir));
+}
+
+@utility halftone {
+    position: relative;
+    isolation: isolate;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: radial-gradient(circle, color-mix(in oklab, var(--color-noir) 55%, transparent) 1.2px, transparent 1.6px);
+        background-size: 6px 6px;
+        mask-image: linear-gradient(135deg, transparent 10%, black 85%);
+    }
+}
+
+@utility halo {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 9999px;
+    background: radial-gradient(circle, color-mix(in oklab, var(--color-rouge-profond) 55%, transparent), transparent 70%);
+    filter: blur(40px);
+}
+
+@utility libelle {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: color-mix(in oklab, var(--color-gris-trait) 60%, transparent);
+}
+
+@keyframes apparition {
+    from {
+        opacity: 0;
+        transform: translateX(24px) skewX(-4deg);
+    }
+}
+
+/* Section statistiques HUD */
+
+@utility texte-chrome {
+    background-image: linear-gradient(to bottom, #FFFFFF 25%, var(--color-lavande));
+    background-clip: text;
+    color: transparent;
+}
+
+@utility carte-stat {
+    --trait: var(--color-cyan-neon);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 3 / 2;
+
+    @media (width >= 48rem) {
+        aspect-ratio: 2 / 1;
+    }
+    border-radius: 1rem;
+    border: 1px solid var(--stat-bordure, color-mix(in oklab, var(--color-lavande) 18%, transparent));
+    background-color: var(--stat-fond, var(--color-nuit));
+    box-shadow: var(--stat-lueur, 0 0 0 transparent, 0 0 0 transparent);
+    transition: background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, transform 300ms ease;
+
+    /* Équerres de visée dans les 4 coins */
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        pointer-events: none;
+        background:
+            linear-gradient(var(--trait), var(--trait)) top left / 14px 1.5px,
+            linear-gradient(var(--trait), var(--trait)) top left / 1.5px 14px,
+            linear-gradient(var(--trait), var(--trait)) top right / 14px 1.5px,
+            linear-gradient(var(--trait), var(--trait)) top right / 1.5px 14px,
+            linear-gradient(var(--trait), var(--trait)) bottom left / 14px 1.5px,
+            linear-gradient(var(--trait), var(--trait)) bottom left / 1.5px 14px,
+            linear-gradient(var(--trait), var(--trait)) bottom right / 14px 1.5px,
+            linear-gradient(var(--trait), var(--trait)) bottom right / 1.5px 14px;
+        background-repeat: no-repeat;
+    }
+}
+
+/* Survol : la carte s'allume en cyan néon */
+@utility carte-stat {
+    &:hover {
+    --stat-fond: color-mix(in oklab, var(--color-cyan-neon) 8%, var(--color-nuit));
+    --stat-bordure: color-mix(in oklab, var(--color-cyan-neon) 60%, transparent);
+    --stat-lueur: 0 0 14px color-mix(in oklab, var(--color-cyan-neon) 35%, transparent),
+        0 0 40px color-mix(in oklab, var(--color-cyan-neon) 15%, transparent);
+    --stat-valeur: var(--color-cyan-neon);
+    --stat-valeur-lueur: 0 0 18px color-mix(in oklab, var(--color-cyan-neon) 50%, transparent);
+    transform: translateY(-4px);
+    }
+}
+
+@utility stat-valeur {
+    font-family: "Big Shoulders", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: clamp(2rem, 4vw, 3.75rem);
+    line-height: 1;
+    color: var(--stat-valeur, #FFFFFF);
+    text-shadow: var(--stat-valeur-lueur, 0 0 0 transparent);
+    transition: color 300ms ease, text-shadow 300ms ease;
+}
+
+@utility stat-libelle {
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: color-mix(in oklab, var(--color-lavande) 75%, transparent);
+}
+
+/* Section profils : cartes de héros qui se déploient au survol */
+
+@utility grille-heros {
+    & .carte-heros {
+        transition: height 450ms cubic-bezier(.22, 1, .36, 1), transform 450ms cubic-bezier(.22, 1, .36, 1),
+            box-shadow 450ms ease-out, border-color 450ms ease-out, filter 450ms ease-out;
+    }
+
+    &:has(.carte-heros:hover) .carte-heros:not(:hover) {
+        filter: brightness(.55) saturate(.7);
+    }
+
+    /* Dernière rangée (hors première) : la carte se déploie vers le haut */
+    @media (width >= 40rem) and (width < 64rem) {
+        & > :nth-child(2n+1):nth-last-child(-n+2):not(:nth-child(-n+2)) .carte-heros,
+        & > :nth-child(2n+1):nth-last-child(-n+2):not(:nth-child(-n+2)) ~ * .carte-heros {
+            top: auto;
+            bottom: 0;
+        }
+    }
+
+    @media (width >= 64rem) {
+        & > :nth-child(4n+1):nth-last-child(-n+4):not(:nth-child(-n+4)) .carte-heros,
+        & > :nth-child(4n+1):nth-last-child(-n+4):not(:nth-child(-n+4)) ~ * .carte-heros {
+            top: auto;
+            bottom: 0;
+        }
+    }
+}
+
+@utility carte-heros {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 13rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid color-mix(in oklab, var(--color-lavande) 18%, transparent);
+    background-color: var(--color-nuit);
+
+    &:hover {
+        z-index: 20;
+        height: 27rem;
+        transform: translateY(-6px) scale(1.02);
+        border-color: var(--accent);
+        box-shadow: 0 30px 60px color-mix(in oklab, var(--color-noir) 85%, transparent),
+            0 0 24px color-mix(in oklab, var(--accent) 25%, transparent);
+    }
+}
+
+@utility trame-points {
+    background-image: radial-gradient(circle, color-mix(in oklab, var(--color-fond-clair) 14%, transparent) 1.2px, transparent 1.6px);
+    background-size: 6px 6px;
+    mask-image: linear-gradient(to bottom, black 40%, transparent);
+}
+
+/* Bandeau d'appel à l'action */
+
+@utility degrade-bandeau {
+    background-image: linear-gradient(to right, var(--color-rouge-alerte), var(--color-rouge-profond));
+}
+
+@utility trame-bandeau {
+    position: relative;
+    isolation: isolate;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: radial-gradient(circle, color-mix(in oklab, var(--color-noir) 25%, transparent) 1.2px, transparent 1.6px);
+        background-size: 6px 6px;
+    }
+}
+
+@utility ombre-bd {
+    text-shadow: 3px 3px 0 var(--color-noir);
+}
+
+@utility bouton-bd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-fond-clair);
+    color: var(--color-noir);
+    font-family: "Big Shoulders", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--color-noir);
+    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+
+    &:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 var(--color-noir);
+    }
+
+    &:active {
+        transform: translate(4px, 4px);
+        box-shadow: 0 0 0 var(--color-noir);
     }
 }

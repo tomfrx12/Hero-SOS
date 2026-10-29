@@ -1,7 +1,12 @@
 import { startTransition, useState } from "react"
-import { Link, useNavigate } from "react-router"
-import { Menu, X } from "lucide-react"
+import { Link, NavLink, useLocation, useNavigate } from "react-router"
+import { useLenis } from "lenis/react"
+import { Menu, Siren, X } from "lucide-react"
+import Bouton from "./ui/Bouton"
 import { useSession } from "../contexte/session"
+
+const classeLien = ({ isActive }: { isActive: boolean }) =>
+    `font-display text-xl font-black italic uppercase tracking-wide transition-colors ${isActive ? "text-white [text-shadow:0_0_14px_var(--color-fond-clair)]" : "text-gris-trait/60 hover:text-white"}`
 
 export default function Header() {
     const { utilisateur, chargement, deconnexion } = useSession()
@@ -18,9 +23,15 @@ export default function Header() {
 
     const fermerMenu = () => setMenuOuvert(false)
 
+    // Sur l'accueil, le header reste caché tant que le hero occupe l'écran
+    const estAccueil = useLocation().pathname === "/"
+    const [surHero, setSurHero] = useState(true)
+    useLenis(({ scroll }) => setSurHero(scroll < window.innerHeight * 0.8))
+    const cache = estAccueil && surHero
+
     return (
-        <header className="sticky top-0 z-50 border-b-2 border-rouge-alerte bg-noir text-white">
-            <div className="mx-auto flex max-w-[80%] flex-wrap items-center justify-between px-4 py-3 md:px-8">
+        <header className={`${estAccueil ? "fixed inset-x-0" : "sticky"} ${cache ? "-translate-y-full opacity-0" : "translate-y-0"} top-0 z-50 transition-[translate,opacity] duration-500 border-b border-rouge-alerte bg-noir/85 text-white shadow-[0_4px_24px_-6px_var(--color-rouge-alerte)] backdrop-blur-md`}>
+            <div className="mx-auto flex max-w-[80%] flex-wrap items-center justify-between px-4 py-3 md:px-0">
                 <Link to="/" onClick={fermerMenu}>
                     <img src="/logo.webp" alt="Héros SOS" className="h-14 w-14 md:h-16 md:w-16" />
                 </Link>
@@ -33,27 +44,27 @@ export default function Header() {
                     onClick={fermerMenu}
                     className={`${menuOuvert ? "flex" : "hidden"} w-full flex-col items-start gap-4 pt-4 md:flex md:w-auto md:flex-row md:items-center md:gap-8 md:pt-0`}
                 >
-                    <Link to="/super-heros" className="font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white">Super Héros</Link>
-                    <Link to="/super-vilains" className="font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white">Super Vilains</Link>
+                    <NavLink to="/super-heros" className={classeLien}>Super Héros</NavLink>
+                    <NavLink to="/super-vilains" className={classeLien}>Super Vilains</NavLink>
                     
                     {utilisateur?.role === "Administrateurs" && (
-                        <Link to="/dashboard-admin" className="font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white">Dashboard Admin</Link>
+                        <NavLink to="/dashboard-admin" className={`${classeLien} font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white`}>Dashboard Admin</NavLink>
                     )}
 
                     {!chargement && utilisateur && (
                         <>
-                            <Link to="/profil" className="font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white">Profil</Link>
+                            <NavLink to="/profil" className={`${classeLien} font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white`}>Profil</NavLink>
                             <button type="button" onClick={seDeconnecter}>Déconnexion</button>
-                            <Link to="/profil/signaler-incidents" className="rounded-md border border-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond">
+                            <Bouton to="/profil/signaler-incidents" className="rounded-md border border-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond" icone={Siren}>
                                 Signaler un incident
-                            </Link>
+                            </Bouton>
                         </>
                     )}
 
                     {!chargement && !utilisateur && (
-                        <Link to="/connexion" className="rounded-md bg-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond">
+                        <Bouton to="/connexion" variante="secondaire" className="rounded-md bg-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond">
                             Connexion
-                        </Link>
+                        </Bouton>
                     )}
                 
                 </nav>
