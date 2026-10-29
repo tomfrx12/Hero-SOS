@@ -1,60 +1,83 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useLenis } from "lenis/react"
 import { Link } from "react-router"
 import { ArrowRight, Siren, Zap } from "lucide-react"
 import Bouton from "../composants/ui/Bouton"
 import BoutonRond from "../composants/ui/BoutonRond"
 import Carte, { type InfoCarte } from "../composants/ui/Carte"
-import CarteHeros, { type StatHeros } from "../composants/ui/CarteHeros"
+import CarteHeros from "../composants/ui/CarteHeros"
 import Pagination from "../composants/ui/Pagination"
+import { appelApi } from "../services/api"
 
-// Données d'exemple en attendant l'API
-const incidents: { titre: string, statut: string, temps: string, infos: InfoCarte[] }[] = [
-    { titre: "Vilain neutralisé", statut: "Résolu", temps: "Il y a 8 min", infos: [
-        { libelle: "Vilain", valeur: "Docteur Rouille", ton: "rouge" },
-        { libelle: "Héros", valeur: "Nova", ton: "clair" },
-        { libelle: "Localisation", valeur: "La Gare" },
-        { libelle: "Durée", valeur: "14 min" },
-    ] },
-    { titre: "Braquage au port", statut: "En cours", temps: "Il y a 12 min", infos: [
-        { libelle: "Vilain", valeur: "Le Crabe", ton: "rouge" },
-        { libelle: "Héros", valeur: "Flamme Bleue", ton: "clair" },
-        { libelle: "Localisation", valeur: "Les Docks" },
-        { libelle: "Menace", valeur: "Élevée", ton: "rouge" },
-    ] },
-    { titre: "Incendie tour nord", statut: "Assigné", temps: "Il y a 40 min", infos: [
-        { libelle: "Vilain", valeur: "Pyros", ton: "rouge" },
-        { libelle: "Héros", valeur: "Hydra", ton: "clair" },
-        { libelle: "Localisation", valeur: "Centre" },
-        { libelle: "Victimes", valeur: "Aucune", ton: "clair" },
-    ] },
-    { titre: "Otages libérés", statut: "Résolu", temps: "Hier", infos: [
-        { libelle: "Vilain", valeur: "Masque Noir", ton: "rouge" },
-        { libelle: "Héros", valeur: "Titan", ton: "clair" },
-        { libelle: "Localisation", valeur: "Le Marché" },
-        { libelle: "Durée", valeur: "1 h 05" },
-    ] },
-]
+interface Incident {
+    id: number
+    type: string
+    status: "Signale" | "En_Cours" | "Reussi" | "Echoue" | "Supprime"
+    urgence: "Haute" | "Normale" | "Basse"
+    adresse: string
+    createdAt: string
+    vilains: { vilain: { pseudo: string } }[]
+    interventions: { debut: string, fin: string | null, super_heros: { pseudo: string | null } }[]
+}
 
-// Données d'exemple en attendant l'API
-const stats = [
-    { valeur: "1 248", libelle: "Héros actifs" },
-    { valeur: "3 902", libelle: "Incidents signalés" },
-    { valeur: "97 %", libelle: "Missions réussies" },
-    { valeur: "4 min", libelle: "Temps moyen" },
-]
+interface Heros {
+    id: number
+    pseudo: string
+    photo: string | null
+    note_moyenne: number | null
+    nombre_avis: number
+    missions_reussies: number
+}
 
-// Données d'exemple en attendant l'API
-const heros: { nom: string, initiales: string, photo?: string, pouvoir: string, ville: string, categorie: string, accent: string, stats: StatHeros[] }[] = [
-    { nom: "Nova", initiales: "NV", pouvoir: "Énergie stellaire", ville: "La Gare", categorie: "Mystique", accent: "var(--color-cyan-neon)", stats: [{ valeur: "4,9", suffixe: "/5", libelle: "128 avis" }, { valeur: "312", libelle: "Missions réussies" }] },
-    { nom: "Flamme Bleue", initiales: "FB", pouvoir: "Pyrokinésie", ville: "Les Docks", categorie: "Force", accent: "var(--color-rouge-alerte)", stats: [{ valeur: "4,7", suffixe: "/5", libelle: "96 avis" }, { valeur: "245", libelle: "Missions réussies" }] },
-    { nom: "Hydra", initiales: "HY", pouvoir: "Contrôle de l'eau", ville: "Centre", categorie: "Mystique", accent: "var(--color-violet-neon)", stats: [{ valeur: "4,8", suffixe: "/5", libelle: "74 avis" }, { valeur: "198", libelle: "Missions réussies" }] },
-    { nom: "Titan", initiales: "TI", pouvoir: "Force colossale", ville: "Le Marché", categorie: "Force", accent: "var(--color-ambre)", stats: [{ valeur: "4,6", suffixe: "/5", libelle: "152 avis" }, { valeur: "407", libelle: "Missions réussies" }] },
-    { nom: "Éclair", initiales: "EC", pouvoir: "Super vitesse", ville: "Le Port", categorie: "Vitesse", accent: "var(--color-ambre)", stats: [{ valeur: "4,9", suffixe: "/5", libelle: "211 avis" }, { valeur: "530", libelle: "Missions réussies" }] },
-    { nom: "Circuit", initiales: "CI", pouvoir: "Technopathie", ville: "Quartier Nord", categorie: "Tech", accent: "var(--color-cyan-neon)", stats: [{ valeur: "4,5", suffixe: "/5", libelle: "63 avis" }, { valeur: "141", libelle: "Missions réussies" }] },
-    { nom: "Ombre", initiales: "OM", pouvoir: "Téléportation", ville: "Vieille Ville", categorie: "Vitesse", accent: "var(--color-violet-neon)", stats: [{ valeur: "4,8", suffixe: "/5", libelle: "88 avis" }, { valeur: "276", libelle: "Missions réussies" }] },
-    { nom: "Armure", initiales: "AR", pouvoir: "Exosquelette", ville: "Zone Sud", categorie: "Tech", accent: "var(--color-rouge-alerte)", stats: [{ valeur: "4,7", suffixe: "/5", libelle: "119 avis" }, { valeur: "333", libelle: "Missions réussies" }] },
-]
+interface Stats {
+    heros_actifs: number
+    incidents_signales: number
+    taux_reussite: number | null
+    temps_moyen_minutes: number | null
+}
+
+const libellesStatut = { Signale: "Signalé", En_Cours: "En cours", Reussi: "Résolu", Echoue: "Échoué", Supprime: "Supprimé" }
+const libellesUrgence = { Haute: "Élevée", Normale: "Normale", Basse: "Basse" }
+
+const accents = ["var(--color-cyan-neon)", "var(--color-rouge-alerte)", "var(--color-violet-neon)", "var(--color-ambre)"]
+
+function depuis(date: string) {
+    const minutes = Math.round((Date.now() - new Date(date).getTime()) / 60000)
+    if (minutes < 1) return "À l'instant"
+    if (minutes < 60) return `Il y a ${minutes}min`
+    if (minutes < 60 * 24) return `Il y a ${Math.floor(minutes / 60)}h`
+    return `Il y a ${Math.floor(minutes / (60 * 24))}j`
+}
+
+function duree(debut: string, fin: string) {
+    const minutes = Math.round((new Date(fin).getTime() - new Date(debut).getTime()) / 60000)
+    if (minutes < 60) return `${minutes} min`
+    return `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, "0")}`
+}
+
+// Transforme un incident de l'API en données pour le composant Carte
+function versCarte(incident: Incident) {
+    const intervention = incident.interventions[0]
+
+    const infos: InfoCarte[] = [
+        { libelle: "Vilain", valeur: incident.vilains[0]?.vilain.pseudo ?? "Inconnu", ton: "rouge" },
+        { libelle: "Héros", valeur: intervention?.super_heros.pseudo ?? "En attente", ton: "clair" },
+        { libelle: "Localisation", valeur: incident.adresse },
+    ]
+
+    if (intervention?.fin) {
+        infos.push({ libelle: "Durée", valeur: duree(intervention.debut, intervention.fin) })
+    } else {
+        infos.push({ libelle: "Menace", valeur: libellesUrgence[incident.urgence], ton: incident.urgence === "Haute" ? "rouge" : undefined })
+    }
+
+    return {
+        titre: incident.type,
+        statut: libellesStatut[incident.status],
+        temps: depuis(incident.createdAt),
+        infos,
+    }
+}
 
 export default function Index() {
     const fondRef = useRef<HTMLImageElement>(null)
@@ -65,8 +88,25 @@ export default function Index() {
         titreRef.current!.style.transform = `translate3d(0, ${scroll * 0.4}px, 0)`
     })
 
+    const [incidents, setIncidents] = useState<Incident[]>([])
+    const [heros, setHeros] = useState<Heros[]>([])
+    const [stats, setStats] = useState<Stats | null>(null)
+
+    useEffect(() => {
+        appelApi("/incidents/recents").then((donnees) => setIncidents(donnees.incidents))
+        appelApi("/heros").then((donnees) => setHeros(donnees.heros))
+        appelApi("/stats").then((donnees) => setStats(donnees))
+    }, [])
+
     const [index, setIndex] = useState(0)
     const total = incidents.length
+
+    const chiffres = [
+        { valeur: stats ? String(stats.heros_actifs) : "–", libelle: "Héros actifs" },
+        { valeur: stats ? String(stats.incidents_signales) : "–", libelle: "Incidents signalés" },
+        { valeur: stats?.taux_reussite != null ? `${stats.taux_reussite} %` : "–", libelle: "Missions réussies" },
+        { valeur: stats?.temps_moyen_minutes != null ? `${stats.temps_moyen_minutes} min` : "–", libelle: "Temps moyen" },
+    ]
 
     return (
         <>
@@ -126,13 +166,17 @@ export default function Index() {
                         </div>
                     </div>
 
-                    <div key={index} className="relative z-10 mt-6 animate-[apparition_.4s_ease-out]">
-                        <Carte {...incidents[index]} />
-                    </div>
+                    {total > 0 && (
+                        <>
+                            <div key={index} className="relative z-10 mt-6 animate-[apparition_.4s_ease-out]">
+                                <Carte {...versCarte(incidents[index])} />
+                            </div>
 
-                    <div className="relative z-10 mt-6 flex justify-center">
-                        <Pagination total={total} actif={index} onChange={setIndex} />
-                    </div>
+                            <div className="relative z-10 mt-6 flex justify-center">
+                                <Pagination total={total} actif={index} onChange={setIndex} />
+                            </div>
+                        </>
+                    )}
                 </div>
             </section>
 
@@ -140,7 +184,7 @@ export default function Index() {
                 <h2 className="texte-chrome text-[clamp(2.5rem,5vw,4rem)]">QG des Héros</h2>
 
                 <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:mt-12 md:grid-cols-4">
-                    {stats.map((stat) => (
+                    {chiffres.map((stat) => (
                         <div key={stat.libelle} className="carte-stat">
                             <span className="stat-valeur">{stat.valeur}</span>
                             <span className="stat-libelle">{stat.libelle}</span>
@@ -159,8 +203,17 @@ export default function Index() {
                 </div>
 
                 <div className="grille-heros mt-8 grid gap-5 md:mt-12 sm:grid-cols-2 lg:grid-cols-4">
-                    {heros.map((h) => (
-                        <CarteHeros key={h.nom} {...h} />
+                    {heros.map((h, i) => (
+                        <CarteHeros
+                            key={h.id}
+                            nom={h.pseudo}
+                            photo={h.photo ?? undefined}
+                            accent={accents[i % accents.length]}
+                            stats={[
+                                { valeur: h.note_moyenne != null ? h.note_moyenne.toFixed(1).replace(".", ",") : "–", suffixe: "/5", libelle: `${h.nombre_avis} avis` },
+                                { valeur: String(h.missions_reussies), libelle: "Missions réussies" },
+                            ]}
+                        />
                     ))}
                 </div>
 
