@@ -7,7 +7,7 @@ export default function Footer() {
 
     return (
         <footer className="mt-auto border-t-2 border-rouge-alerte bg-noir text-white">
-            <div className="mx-auto grid max-w-[80%] gap-10 px-4 py-12 text-left md:grid-cols-3 md:px-8">
+            <div className="mx-auto grid max-w-[80%] gap-10 px-4 py-12 text-left md:grid-cols-[1fr_2fr_1fr] md:px-8">
                 <div className="flex flex-col">
                     <Link to="/">
                         <img src="/logo.webp" alt="Héros SOS" className="h-40 w-40" />
