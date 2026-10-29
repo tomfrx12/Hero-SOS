@@ -34,6 +34,14 @@ const incidents: { titre: string, statut: string, temps: string, infos: InfoCart
     ] },
 ]
 
+// Données d'exemple en attendant l'API
+const stats = [
+    { valeur: "1 248", libelle: "Héros actifs" },
+    { valeur: "3 902", libelle: "Incidents signalés" },
+    { valeur: "97 %", libelle: "Missions réussies" },
+    { valeur: "4 min", libelle: "Temps moyen" },
+]
+
 export default function Index() {
     const fondRef = useRef<HTMLImageElement>(null)
     const titreRef = useRef<HTMLDivElement>(null)
@@ -111,6 +119,19 @@ export default function Index() {
                     <div className="relative z-10 mt-6 flex justify-center">
                         <Pagination total={total} actif={index} onChange={setIndex} />
                     </div>
+                </div>
+            </section>
+
+            <section className="mx-auto max-w-6xl px-4 py-16 text-center md:py-24">
+                <h2 className="texte-chrome text-[clamp(2.5rem,5vw,4rem)]">QG des Héros</h2>
+
+                <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:mt-12 md:grid-cols-4">
+                    {stats.map((stat) => (
+                        <div key={stat.libelle} className="carte-stat">
+                            <span className="stat-valeur">{stat.valeur}</span>
+                            <span className="stat-libelle">{stat.libelle}</span>
+                        </div>
+                    ))}
                 </div>
             </section>
 

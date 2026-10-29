@@ -9,6 +9,9 @@
     --color-gris-texte: #4A4A52;
     --color-gris-trait: #E4E4E7;
     --color-fond-clair: #F4F4F5;
+    --color-cyan-neon: #00E5FF;
+    --color-lavande: #B9B4D6;
+    --color-nuit: #120E1A;
 }
 
 @layer base {
@@ -117,4 +120,82 @@
         opacity: 0;
         transform: translateX(24px) skewX(-4deg);
     }
+}
+
+/* Section statistiques HUD */
+
+@utility texte-chrome {
+    background-image: linear-gradient(to bottom, #FFFFFF 25%, var(--color-lavande));
+    background-clip: text;
+    color: transparent;
+}
+
+@utility carte-stat {
+    --trait: var(--color-cyan-neon);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 3 / 2;
+
+    @media (width >= 48rem) {
+        aspect-ratio: 2 / 1;
+    }
+    border-radius: 1rem;
+    border: 1px solid var(--stat-bordure, color-mix(in oklab, var(--color-lavande) 18%, transparent));
+    background-color: var(--stat-fond, var(--color-nuit));
+    box-shadow: var(--stat-lueur, 0 0 0 transparent, 0 0 0 transparent);
+    transition: background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, transform 300ms ease;
+
+    /* Équerres de visée dans les 4 coins */
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        pointer-events: none;
+        background:
+            linear-gradient(var(--trait), var(--trait)) top left / 14px 1.5px,
+            linear-gradient(var(--trait), var(--trait)) top left / 1.5px 14px,
+            linear-gradient(var(--trait), var(--trait)) top right / 14px 1.5px,
+            linear-gradient(var(--trait), var(--trait)) top right / 1.5px 14px,
+            linear-gradient(var(--trait), var(--trait)) bottom left / 14px 1.5px,
+            linear-gradient(var(--trait), var(--trait)) bottom left / 1.5px 14px,
+            linear-gradient(var(--trait), var(--trait)) bottom right / 14px 1.5px,
+            linear-gradient(var(--trait), var(--trait)) bottom right / 1.5px 14px;
+        background-repeat: no-repeat;
+    }
+}
+
+/* Survol : la carte s'allume en cyan néon */
+@utility carte-stat {
+    &:hover {
+    --stat-fond: color-mix(in oklab, var(--color-cyan-neon) 8%, var(--color-nuit));
+    --stat-bordure: color-mix(in oklab, var(--color-cyan-neon) 60%, transparent);
+    --stat-lueur: 0 0 14px color-mix(in oklab, var(--color-cyan-neon) 35%, transparent),
+        0 0 40px color-mix(in oklab, var(--color-cyan-neon) 15%, transparent);
+    --stat-valeur: var(--color-cyan-neon);
+    --stat-valeur-lueur: 0 0 18px color-mix(in oklab, var(--color-cyan-neon) 50%, transparent);
+    transform: translateY(-4px);
+    }
+}
+
+@utility stat-valeur {
+    font-family: "Big Shoulders", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    font-size: clamp(2rem, 4vw, 3.75rem);
+    line-height: 1;
+    color: var(--stat-valeur, #FFFFFF);
+    text-shadow: var(--stat-valeur-lueur, 0 0 0 transparent);
+    transition: color 300ms ease, text-shadow 300ms ease;
+}
+
+@utility stat-libelle {
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: color-mix(in oklab, var(--color-lavande) 75%, transparent);
 }
