@@ -1,18 +1,25 @@
-import { useState } from "react"
-import { Link, NavLink, useLocation } from "react-router"
+import { startTransition, useState } from "react"
+import { Link, NavLink, useLocation, useNavigate } from "react-router"
 import { useLenis } from "lenis/react"
 import { Menu, Siren, X } from "lucide-react"
 import Bouton from "./ui/Bouton"
+import { useSession } from "../contexte/session"
 
 const classeLien = ({ isActive }: { isActive: boolean }) =>
     `font-display text-xl font-black italic uppercase tracking-wide transition-colors ${isActive ? "text-white [text-shadow:0_0_14px_var(--color-fond-clair)]" : "text-gris-trait/60 hover:text-white"}`
 
 export default function Header() {
-    
-    const estConnecte: boolean = true
-    const role: string = "admin"
+    const { utilisateur, chargement, deconnexion } = useSession()
+    const navigate = useNavigate()
 
     const [menuOuvert, setMenuOuvert] = useState(false)
+
+    function seDeconnecter() {
+        startTransition(() => {
+            navigate("/")
+            deconnexion()
+        })
+    }
 
     const fermerMenu = () => setMenuOuvert(false)
 
@@ -40,19 +47,22 @@ export default function Header() {
                     <NavLink to="/super-heros" className={classeLien}>Super Héros</NavLink>
                     <NavLink to="/super-vilains" className={classeLien}>Super Vilains</NavLink>
                     
-                    {role === "admin" && (
-                        <NavLink to="/dashboard-admin" className={classeLien}>Dashboard Admin</NavLink>
+                    {utilisateur?.role === "Administrateurs" && (
+                        <NavLink to="/dashboard-admin" className={`${classeLien} font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white`}>Dashboard Admin</NavLink>
                     )}
-                    
-                    {estConnecte ? (
+
+                    {!chargement && utilisateur && (
                         <>
-                            <NavLink to="/profil" className={classeLien}>Profil</NavLink>
-                            <Bouton to="/profil/signaler-incidents" icone={Siren}>
+                            <NavLink to="/profil" className={`${classeLien} font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white`}>Profil</Link>
+                            <button type="button" onClick={seDeconnecter}>Déconnexion</button>
+                            <Bouton to="/profil/signaler-incidents" className="rounded-md border border-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond" icone={Siren>
                                 Signaler un incident
                             </Bouton>
                         </>
-                    ) : (
-                        <Bouton to="/connexion" variante="secondaire">
+                    )}
+
+                    {!chargement && !utilisateur && (
+                        <Bouton to="/connexion" variante="secondaire" className="rounded-md bg-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond">
                             Connexion
                         </Bouton>
                     )}

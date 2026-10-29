@@ -1,8 +1,11 @@
 import { Link } from "react-router"
 import { Mail, Send } from "lucide-react"
 import Bouton from "./ui/Bouton"
+import { useSession } from "../contexte/session"
 
 export default function Footer() {
+    const { utilisateur, chargement } = useSession()
+
     return (
         <footer className="mt-auto border-t border-rouge-alerte shadow-[0_-4px_24px_-6px_var(--color-rouge-alerte)] bg-noir text-white">
             <div className="mx-auto grid max-w-[80%] gap-10 px-4 py-12 text-left md:grid-cols-3 md:px-8">
@@ -29,8 +32,12 @@ export default function Footer() {
                     <span className="libelle mb-1">Navigation</span>
                     <Link to="/super-heros" className="text-gris-trait/70 transition-colors hover:text-white">Super Héros</Link>
                     <Link to="/super-vilains" className="text-gris-trait/70 transition-colors hover:text-white">Super Vilains</Link>
-                    <Link to="/connexion" className="text-gris-trait/70 transition-colors hover:text-white">Connexion</Link>
-                    <Link to="/profil/signaler-incidents" className="text-gris-trait/70 transition-colors hover:text-white">Signaler un incident</Link>
+                    {!chargement && utilisateur && (
+                        <Link to="/profil/signaler-incidents" className="text-gris-trait/70 transition-colors hover:text-white">Signaler un incident</Link>
+                    )}
+                    {!chargement && !utilisateur && (
+                        <Link to="/connexion" className="text-gris-trait/70 transition-colors hover:text-white">Connexion</Link>
+                    )}
                     <Link to="/mentions-legales" className="text-gris-trait/70 transition-colors hover:text-white">Mentions légales</Link>
                 </nav>
             </div>
