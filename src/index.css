@@ -17,25 +17,26 @@
     }
 
     body {
-        background-color: #FFFFFF;
-        color: var(--color-noir);
+        background-color: var(--color-noir);
+        color: var(--color-fond-clair);
+        overflow-x: clip;
     }
 
-    h1, h2 {
+    h1, h2, h3 {
         font-family: "Big Shoulders", sans-serif;
         font-weight: 900;
-        font-style: normal;
+        font-style: italic;
         text-transform: uppercase;
     }
 
     h1 {
-        font-size: 7rem;
-        line-height: 0.88;
+        font-size: clamp(3.5rem, 10vw, 8rem);
+        line-height: 0.85;
     }
 
     h2 {
-        font-size: 4rem;
-        line-height: 0.92;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        line-height: 0.9;
     }
 
     h3 {
@@ -55,5 +56,65 @@
 
     button:disabled {
         cursor: not-allowed;
+    }
+}
+
+/* Direction artistique comics néon */
+
+@utility glow-rouge {
+    box-shadow: 0 0 12px color-mix(in oklab, var(--color-rouge-alerte) 70%, transparent),
+        0 0 32px color-mix(in oklab, var(--color-rouge-alerte) 35%, transparent);
+}
+
+@utility glow-clair {
+    box-shadow: 0 0 10px color-mix(in oklab, var(--color-fond-clair) 45%, transparent),
+        0 0 24px color-mix(in oklab, var(--color-fond-clair) 15%, transparent);
+}
+
+@utility texte-glow-rouge {
+    text-shadow: 0 0 18px color-mix(in oklab, var(--color-rouge-alerte) 80%, transparent),
+        0 0 42px color-mix(in oklab, var(--color-rouge-alerte) 40%, transparent);
+}
+
+@utility degrade-action {
+    background-image: linear-gradient(135deg, var(--color-rouge-alerte), var(--color-rouge-profond) 45%, var(--color-noir));
+}
+
+@utility halftone {
+    position: relative;
+    isolation: isolate;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background-image: radial-gradient(circle, color-mix(in oklab, var(--color-noir) 55%, transparent) 1.2px, transparent 1.6px);
+        background-size: 6px 6px;
+        mask-image: linear-gradient(135deg, transparent 10%, black 85%);
+    }
+}
+
+@utility halo {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 9999px;
+    background: radial-gradient(circle, color-mix(in oklab, var(--color-rouge-profond) 55%, transparent), transparent 70%);
+    filter: blur(40px);
+}
+
+@utility libelle {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: color-mix(in oklab, var(--color-gris-trait) 60%, transparent);
+}
+
+@keyframes apparition {
+    from {
+        opacity: 0;
+        transform: translateX(24px) skewX(-4deg);
     }
 }
