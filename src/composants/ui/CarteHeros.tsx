@@ -8,10 +8,8 @@ export interface StatHeros {
 
 interface CarteHerosProps {
     nom: string
-    initiales: string
+    initiales?: string
     photo?: string
-    pouvoir: string
-    ville: string
     accent: string
     stats: StatHeros[]
 }
@@ -19,7 +17,7 @@ interface CarteHerosProps {
 // Transition commune à tous les éléments qui se transforment au survol
 const anime = "absolute transition-all duration-[450ms] ease-[cubic-bezier(.22,1,.36,1)] motion-reduce:transition-none"
 
-export default function CarteHeros({ nom, photo, pouvoir, accent, stats }: CarteHerosProps) {
+export default function CarteHeros({ nom, photo, accent, stats }: CarteHerosProps) {
     return (
         <div className="relative h-52">
             <article className="carte-heros group text-left" style={{ "--accent": accent } as CSSProperties}>
@@ -41,9 +39,6 @@ export default function CarteHeros({ nom, photo, pouvoir, accent, stats }: Carte
                 <h3 className={`${anime} top-5 left-20 w-[calc(100%-6rem)] truncate text-xl text-white group-hover:top-55 group-hover:left-1/2 group-hover:w-[calc(100%-2rem)] group-hover:-translate-x-1/2 group-hover:text-center group-hover:text-3xl`}>
                     {nom}
                 </h3>
-
-                {/* Pouvoir : sous le nom, recentré */}
-                <p className={`${anime} top-12 left-20 whitespace-nowrap text-sm! text-gris-trait/60 group-hover:top-63 group-hover:left-1/2 group-hover:-translate-x-1/2 group-hover:text-gris-trait/80`}>{pouvoir}</p>
 
                 {/* Statistiques */}
                 <div className={`${anime} top-22 inset-x-5 grid grid-cols-2 gap-4 group-hover:top-77 group-hover:text-center`}>
