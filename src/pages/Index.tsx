@@ -78,7 +78,7 @@ export default function Index() {
                     ref={fondRef}
                     src="/fondo.webp"
                     alt=""
-                    className="absolute inset-0 h-full w-full object-cover will-change-transform"
+                    className="absolute top-0 left-1/2 h-full w-[max(100%,1440px)] max-w-none -translate-x-1/2 object-cover will-change-transform"
                 />
 
                 <div
@@ -99,7 +99,7 @@ export default function Index() {
                 <img
                     src="/montanya.webp"
                     alt=""
-                    className="pointer-events-none absolute inset-x-0 bottom-0 w-full object-cover object-bottom"
+                    className="pointer-events-none absolute bottom-0 left-1/2 w-[max(100%,1440px)] max-w-none -translate-x-1/2"
                 />
 
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-noir via-noir/70 to-transparent" />
