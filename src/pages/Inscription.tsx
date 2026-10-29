@@ -1,6 +1,9 @@
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import { Link } from "react-router"
+import { ChevronDown, UserPlus } from "lucide-react"
 import Champ from "../composants/Champ"
+import ChampAdresse, { type Adresse } from "../composants/ChampAdresse"
+import Bouton from "../composants/ui/Bouton"
 import { useSession } from "../contexte/session"
 import { appelApi } from "../services/api"
 
@@ -13,19 +16,32 @@ const formulaireVide = {
     date_de_naissance: "",
     email: "",
     numero_tel: "",
-    adresse: "",
     complement_adresse: "",
-    ville: "",
-    code_postal: "",
-    pays: "France",
     mot_de_passe: "",
     confirmation: "",
 }
+
+const avantages = [
+    "Citoyen : ton compte est actif tout de suite",
+    "Super-héros : ta candidature est validée par un administrateur",
+    "Signale les incidents près de chez toi",
+    "Suis chaque intervention en direct",
+    "Inscription gratuite, en deux minutes",
+]
+
+const roles = [
+    { valeur: "Citoyens", titre: "Citoyen", detail: "Je signale des incidents" },
+    { valeur: "SuperHeros", titre: "Super-héros", detail: "J'interviens sur le terrain" },
+]
+
+const styleTitreBloc = "mb-2 font-display text-2xl font-black italic uppercase text-white"
 
 export default function Inscription() {
     const { connexion } = useSession()
 
     const [formulaire, setFormulaire] = useState(formulaireVide)
+    // Rue, code postal, ville, pays et coordonnées GPS, remplis par ChampAdresse
+    const [adresse, setAdresse] = useState<Adresse | null>(null)
     const [erreur, setErreur] = useState("")
     const [envoi, setEnvoi] = useState(false)
     const [enAttente, setEnAttente] = useState(false)
@@ -36,9 +52,15 @@ export default function Inscription() {
         setFormulaire({ ...formulaire, [evenement.target.name]: evenement.target.value })
     }
 
+
     async function envoyer(evenement: FormEvent) {
         evenement.preventDefault()
         setErreur("")
+
+        if (!adresse) {
+            setErreur("Recherche ton adresse puis choisis-la dans la liste")
+            return
+        }
 
         if (formulaire.mot_de_passe !== formulaire.confirmation) {
             setErreur("Les deux mots de passe ne sont pas identiques")
@@ -47,19 +69,11 @@ export default function Inscription() {
 
         setEnvoi(true)
         try {
-            // On n'envoie pas la confirmation, et le pseudo seulement pour un héros
-            // (le pseudo est unique en base, un pseudo vide bloquerait le 2e citoyen)
-            await appelApi("/auth/inscription", "POST", {
-                ...formulaire,
-                confirmation: undefined,
-                pseudo: estHeros ? formulaire.pseudo : undefined,
-            })
+            await appelApi("/auth/inscription", "POST", {...formulaire, ...adresse, confirmation: undefined, pseudo: estHeros ? formulaire.pseudo : undefined})
 
             if (estHeros) {
-                // Un super-héros doit être validé par un administrateur avant de se connecter
                 setEnAttente(true)
             } else {
-                // Une fois connecté, RouteNonConnecte redirige tout seul
                 await connexion(formulaire.email, formulaire.mot_de_passe)
             }
         } catch (e) {
@@ -71,77 +85,127 @@ export default function Inscription() {
 
     if (enAttente) {
         return (
-            <section className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-12 text-left">
-                <h1 className="text-5xl">Demande envoyée</h1>
-                <p>Votre compte super-héros doit être validé par un administrateur. Vous pourrez vous connecter dès qu'il sera accepté.</p>
-                <Link to="/" className="underline">Retour à l'accueil</Link>
+            <section className="mx-auto w-full max-w-xl overflow-hidden rounded-2xl border border-gris-texte/40 bg-graphite text-left">
+                <div className="degrade-action halftone p-8 md:p-10">
+                    <span className="libelle text-fond-clair/80!">Candidature super-héros</span>
+                    <h1 className="mt-3 text-[clamp(3rem,5vw,4.5rem)] text-white">
+                        Demande <span className="ombre-bd">envoyée</span>
+                    </h1>
+                </div>
+                <div className="flex flex-col items-start gap-6 p-8 md:p-10">
+                    <p className="text-gris-trait/80">
+                        Ton compte super-héros doit être validé par un administrateur.
+                        <br/>
+                        Tu pourras te connecter dès qu'il sera accepté.
+                    </p>
+                    <Bouton to="/">Retour à l'accueil</Bouton>
+                </div>
             </section>
         )
     }
 
     return (
-        <section className="flex flex-col gap-6 text-left">
-            <h1>Créer un compte</h1>
+        <section className="mx-auto grid w-full overflow-hidden rounded-2xl border border-gris-texte/40 bg-graphite text-left md:grid-cols-[2fr_3fr]">
+            <div className="degrade-action halftone p-8 md:p-10">
+                <div className="flex flex-col gap-10 md:mt-20">
+                    <h1 className="text-[clamp(3rem,5vw,4.5rem)] text-white">
+                        Entre dans l'<span className="ombre-bd">action</span>
+                    </h1>
 
-            <form onSubmit={envoyer} className="flex flex-col gap-4">
-                <fieldset className="flex flex-col gap-3 rounded border border-gris-trait p-4">
-                    <legend className="px-1 font-semibold">Je suis</legend>
-                    <label className="flex items-center gap-2">
-                        <input type="radio" name="role" value="Citoyens" checked={formulaire.role === "Citoyens"} onChange={modifier} />
-                        Citoyen
-                    </label>
-                    <label className="flex items-center gap-2">
-                        <input type="radio" name="role" value="SuperHeros" checked={estHeros} onChange={modifier} />
-                        Super-héros
-                    </label>
-                    {estHeros && (
-                        <Champ label="Pseudo" name="pseudo" required value={formulaire.pseudo} onChange={modifier} />
-                    )}
-                </fieldset>
+                    <ul className="liste-puces text-white/90 [--puce:var(--color-fond-clair)]">
+                        {avantages.map((avantage) => (
+                            <li key={avantage}>{avantage}</li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
 
-                <fieldset className="flex flex-col gap-3 rounded border border-gris-trait p-4">
-                    <legend className="px-1 font-semibold">Informations personnelles</legend>
-                    <label className="flex flex-col gap-1 text-sm">
-                        <span>Civilité</span>
-                        <select className="rounded border border-gris-trait px-3 py-2 text-base" name="civilite" required value={formulaire.civilite} onChange={modifier}>
-                            <option value="" disabled>Choisir</option>
-                            <option value="M.">M.</option>
-                            <option value="Mme">Mme</option>
-                            <option value="Autre">Autre</option>
-                        </select>
-                    </label>
-                    <Champ label="Nom" name="nom" autoComplete="family-name" required value={formulaire.nom} onChange={modifier} />
-                    <Champ label="Prénom" name="prenom" autoComplete="given-name" required value={formulaire.prenom} onChange={modifier} />
-                    <Champ label="Date de naissance" name="date_de_naissance" type="date" autoComplete="bday" required value={formulaire.date_de_naissance} onChange={modifier} />
-                </fieldset>
+            <div className="flex flex-col gap-8 p-8 md:p-10">
+                <h2 className="text-4xl text-white">Crée ton compte</h2>
 
-                <fieldset className="flex flex-col gap-3 rounded border border-gris-trait p-4">
-                    <legend className="px-1 font-semibold">Coordonnées</legend>
-                    <Champ label="Email" name="email" type="email" autoComplete="email" required value={formulaire.email} onChange={modifier} />
-                    <Champ label="Numéro de portable" name="numero_tel" type="tel" autoComplete="tel" required value={formulaire.numero_tel} onChange={modifier} />
-                    <Champ label="Rue" name="adresse" autoComplete="street-address" required value={formulaire.adresse} onChange={modifier} />
-                    <Champ label="Complément d'adresse (facultatif)" name="complement_adresse" value={formulaire.complement_adresse} onChange={modifier} />
-                    <Champ label="Ville" name="ville" autoComplete="address-level2" required value={formulaire.ville} onChange={modifier} />
-                    <Champ label="Code postal" name="code_postal" autoComplete="postal-code" required value={formulaire.code_postal} onChange={modifier} />
-                    <Champ label="Pays" name="pays" autoComplete="country-name" required value={formulaire.pays} onChange={modifier} />
-                </fieldset>
+                <form onSubmit={envoyer} className="flex flex-col gap-10">
+                    <fieldset>
+                        <legend className={styleTitreBloc}>Je suis</legend>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                            {roles.map((role) => (
+                                <label
+                                    key={role.valeur}
+                                    className="cursor-pointer rounded-xl border border-gris-texte/60 bg-noir p-4 transition-colors hover:border-gris-trait/60 has-checked:border-rouge-alerte has-checked:bg-rouge-alerte/15"
+                                >
+                                    <input type="radio" name="role" value={role.valeur} checked={formulaire.role === role.valeur} onChange={modifier} className="sr-only" />
+                                    <span className="block font-display text-xl font-black italic uppercase text-white">{role.titre}</span>
+                                    <span className="text-sm text-gris-trait/70">{role.detail}</span>
+                                </label>
+                            ))}
+                        </div>
+                        {estHeros && (
+                            <div className="mt-4">
+                                <Champ label="Pseudo de super-héros" name="pseudo" placeholder="Flamme Bleue" required value={formulaire.pseudo} onChange={modifier} />
+                            </div>
+                        )}
+                    </fieldset>
 
-                <fieldset className="flex flex-col gap-3 rounded border border-gris-trait p-4">
-                    <legend className="px-1 font-semibold">Sécurité</legend>
-                    <Champ label="Mot de passe (8 caractères min.)" name="mot_de_passe" type="password" autoComplete="new-password" minLength={8} required value={formulaire.mot_de_passe} onChange={modifier} />
-                    <Champ label="Confirmation du mot de passe" name="confirmation" type="password" autoComplete="new-password" required value={formulaire.confirmation} onChange={modifier} />
-                </fieldset>
+                    <fieldset>
+                        <legend className={styleTitreBloc}>Identité</legend>
+                        <div className="grid gap-5 sm:grid-cols-2">
+                            <label className="flex flex-col gap-2">
+                                <span className="libelle">Civilité</span>
+                                <span className="relative">
+                                    <select className="w-full appearance-none rounded-xl border border-gris-texte/60 bg-noir py-3 pr-10 pl-4 text-fond-clair outline-none transition-colors focus:border-rouge-alerte focus:glow-rouge" name="civilite" required value={formulaire.civilite} onChange={modifier}>
+                                        <option value="" disabled>Choisir</option>
+                                        <option value="M.">M.</option>
+                                        <option value="Mme">Mme</option>
+                                        <option value="Autre">Autre</option>
+                                    </select>
+                                    <ChevronDown size={18} className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-gris-trait/60" />
+                                </span>
+                            </label>
+                            <Champ label="Date de naissance" name="date_de_naissance" type="date" autoComplete="bday" required value={formulaire.date_de_naissance} onChange={modifier} />
+                            <Champ label="Nom" name="nom" placeholder="Dupont" autoComplete="family-name" required value={formulaire.nom} onChange={modifier} />
+                            <Champ label="Prénom" name="prenom" placeholder="Camille" autoComplete="given-name" required value={formulaire.prenom} onChange={modifier} />
+                        </div>
+                    </fieldset>
 
-                {erreur && <p role="alert" className="text-rouge-alerte">{erreur}</p>}
+                    <fieldset>
+                        <legend className={styleTitreBloc}>Coordonnées</legend>
+                        <div className="grid gap-5 sm:grid-cols-2">
+                            <Champ label="Email" name="email" placeholder="camille@email.fr" type="email" autoComplete="email" required value={formulaire.email} onChange={modifier} />
+                            <Champ label="Numéro de portable" name="numero_tel" placeholder="06 12 34 56 78" type="tel" autoComplete="tel" required value={formulaire.numero_tel} onChange={modifier} />
+                            <div className="sm:col-span-2">
+                                <ChampAdresse onChoisir={setAdresse} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <Champ label="Complément d'adresse (facultatif)" name="complement_adresse" placeholder="Bâtiment, étage, appartement…" value={formulaire.complement_adresse} onChange={modifier} />
+                            </div>
+                        </div>
+                    </fieldset>
 
-                <button type="submit" disabled={envoi} className="rounded bg-rouge-alerte hover:bg-rouge-profond px-4 py-2 text-white disabled:opacity-50">
-                    {envoi ? "Création…" : "Créer mon compte"}
-                </button>
-            </form>
+                    <fieldset>
+                        <legend className={styleTitreBloc}>Sécurité</legend>
+                        <div className="grid gap-5 sm:grid-cols-2">
+                            <Champ label="Mot de passe (8 min.)" name="mot_de_passe" type="password" placeholder="••••••••" autoComplete="new-password" minLength={8} required value={formulaire.mot_de_passe} onChange={modifier} />
+                            <Champ label="Confirmation" name="confirmation" type="password" placeholder="••••••••" autoComplete="new-password" required value={formulaire.confirmation} onChange={modifier} />
+                        </div>
+                    </fieldset>
 
-            <p>
-                Déjà inscrit ? <Link to="/connexion" className="underline">Se connecter</Link>
-            </p>
+                    <div className="flex flex-col gap-5">
+                        {erreur && (
+                            <p role="alert" className="rounded-xl border border-rouge-alerte/50 bg-rouge-alerte/15 px-4 py-3 text-sm! text-fond-clair">
+                                {erreur}
+                            </p>
+                        )}
+
+                        <Bouton type="submit" icone={UserPlus} disabled={envoi} className="w-full">
+                            {envoi ? "Création…" : "Créer mon compte"}
+                        </Bouton>
+                    </div>
+                </form>
+
+                <p className="text-sm! text-gris-trait/70">
+                    Déjà inscrit ?{" "}
+                    <Link to="/connexion" className="font-semibold text-white hover:underline">Se connecter</Link>
+                </p>
+            </div>
         </section>
     )
 }
