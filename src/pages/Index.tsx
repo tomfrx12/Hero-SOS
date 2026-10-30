@@ -5,7 +5,7 @@ import { ArrowRight, Siren, Zap } from "lucide-react"
 import Bouton from "../composants/ui/Bouton"
 import BoutonRond from "../composants/ui/BoutonRond"
 import Carte, { type InfoCarte } from "../composants/ui/Carte"
-import CarteHeros from "../composants/ui/CarteHeros"
+import GrilleHeros, { type Heros } from "../composants/GrilleHeros"
 import Pagination from "../composants/ui/Pagination"
 import { rolesSignalement, useSession } from "../contexte/session"
 import { appelApi } from "../services/api"
@@ -21,15 +21,6 @@ interface Incident {
     interventions: { debut: string, fin: string | null, super_heros: { pseudo: string | null } }[]
 }
 
-interface Heros {
-    id: number
-    pseudo: string
-    photo: string | null
-    note_moyenne: number | null
-    nombre_avis: number
-    missions_reussies: number
-}
-
 interface Stats {
     heros_actifs: number
     incidents_signales: number
@@ -39,8 +30,6 @@ interface Stats {
 
 const libellesStatut = { Signale: "Signalé", En_Cours: "En cours", Reussi: "Résolu", Echoue: "Échoué", Supprime: "Supprimé" }
 const libellesUrgence = { Haute: "Élevée", Normale: "Normale", Basse: "Basse" }
-
-const accents = ["var(--color-cyan-neon)", "var(--color-rouge-alerte)", "var(--color-violet-neon)", "var(--color-ambre)"]
 
 function depuis(date: string) {
     const minutes = Math.round((Date.now() - new Date(date).getTime()) / 60000)
@@ -206,20 +195,7 @@ export default function Index() {
                     </div>
                 </div>
 
-                <div className="grille-heros mt-8 grid gap-5 md:mt-12 sm:grid-cols-2 lg:grid-cols-4">
-                    {heros.map((h, i) => (
-                        <CarteHeros
-                            key={h.id}
-                            nom={h.pseudo}
-                            photo={h.photo ?? undefined}
-                            accent={accents[i % accents.length]}
-                            stats={[
-                                { valeur: h.note_moyenne != null ? h.note_moyenne.toFixed(1).replace(".", ",") : "–", suffixe: "/5", libelle: `${h.nombre_avis} avis` },
-                                { valeur: String(h.missions_reussies), libelle: "Missions réussies" },
-                            ]}
-                        />
-                    ))}
-                </div>
+                <GrilleHeros heros={heros} />
 
                 <Link to="/super-heros" className="group mt-10 inline-flex items-center gap-2 font-display text-lg font-black italic uppercase tracking-wide text-cyan-neon">
                     Voir tous les héros
