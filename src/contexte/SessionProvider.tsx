@@ -25,7 +25,7 @@ export default function SessionProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <SessionContext.Provider value={{ utilisateur, chargement, connexion, deconnexion }}>
+        <SessionContext.Provider value={{ utilisateur, chargement, connexion, deconnexion, modifierUtilisateur: setUtilisateur }}>
             {children}
         </SessionContext.Provider>
     )
