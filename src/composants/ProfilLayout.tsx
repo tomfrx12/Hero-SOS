@@ -6,6 +6,7 @@ const onglets: { to: string, label: string, end?: boolean, roles: Role[] }[] = [
     { to: "/profil", label: "Profil", end: true, roles: ["Citoyens", "SuperHeros", "Administrateurs"] },
     { to: "/profil/incidents", label: "Mes incidents", roles: rolesSignalement },
     { to: "/profil/signaler-incidents", label: "Signaler un incident", roles: rolesSignalement },
+    { to: "/profil/interventions", label: "Mes interventions", roles: ["SuperHeros"] },
     { to: "/profil/statistiques", label: "Statistiques", roles: ["SuperHeros"] },
     { to: "/profil/reputation", label: "Réputation", roles: ["SuperHeros"] },
     { to: "/profil/informations", label: "Informations", roles: ["Citoyens", "SuperHeros", "Administrateurs"] },

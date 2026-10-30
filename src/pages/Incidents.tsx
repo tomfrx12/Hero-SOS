@@ -2,6 +2,9 @@ import { useEffect, useState } from "react"
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from "react-leaflet"
 import L from "leaflet"
 import { LoaderCircle } from "lucide-react"
+import { useNavigate } from "react-router"
+import Bouton from "../composants/ui/Bouton"
+import { useSession } from "../contexte/session"
 import { appelApi } from "../services/api"
 
 interface Incident {
@@ -22,6 +25,7 @@ interface Incident {
 const libellesStatut = { Signale: "Signalé", En_Cours: "En cours" }
 const libellesUrgence = { Haute: "Élevée", Normale: "Normale", Basse: "Basse" }
 const couleursUrgence = { Haute: "#E10600", Normale: "#FFB020", Basse: "#00E5FF" }
+const urgences: Incident["urgence"][] = ["Haute", "Normale", "Basse"]
 
 // Un point de la couleur de l'urgence, plus gros pour l'incident choisi
 function icone(incident: Incident, choisi: boolean) {
@@ -40,6 +44,56 @@ function SuiviZone({ onChanger }: { onChanger: (zone: L.LatLngBounds) => void })
         moveend: () => onChanger(carte.getBounds()),
     })
     return null
+}
+
+// Boutons réservés aux héros (intervenir) et aux héros / admins (priorité)
+function ActionsIncident({ incident, onUrgence }: { incident: Incident, onUrgence: (urgence: Incident["urgence"]) => void }) {
+    const { utilisateur } = useSession()
+    const navigate = useNavigate()
+    const [erreur, setErreur] = useState("")
+
+    if (utilisateur?.role !== "SuperHeros" && utilisateur?.role !== "Administrateurs") return null
+
+    async function intervenir() {
+        try {
+            await appelApi(`/incidents/${incident.id}/intervention`, "POST")
+            navigate("/profil/interventions")
+        } catch (err) {
+            setErreur((err as Error).message)
+        }
+    }
+
+    async function changerUrgence(urgence: Incident["urgence"]) {
+        try {
+            await appelApi(`/incidents/${incident.id}/urgence`, "PATCH", { urgence })
+            onUrgence(urgence)
+        } catch (err) {
+            setErreur((err as Error).message)
+        }
+    }
+
+    return (
+        <div className="flex flex-col gap-3 border-t border-gris-texte/40 px-5 py-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2 text-sm text-gris-trait/70">
+                    Priorité
+                    {urgences.map((urgence) => (
+                        <button
+                            key={urgence}
+                            type="button"
+                            onClick={() => changerUrgence(urgence)}
+                            className={`cursor-pointer rounded-full border px-3 py-1 transition-colors ${incident.urgence === urgence ? "text-noir" : "border-gris-texte/60 hover:text-white"}`}
+                            style={incident.urgence === urgence ? { background: couleursUrgence[urgence], borderColor: couleursUrgence[urgence] } : undefined}
+                        >
+                            {libellesUrgence[urgence]}
+                        </button>
+                    ))}
+                </div>
+                {utilisateur.role === "SuperHeros" && <Bouton onClick={intervenir}>Intervenir</Bouton>}
+            </div>
+            {erreur && <p role="alert" className="text-sm! text-rouge-alerte">{erreur}</p>}
+        </div>
+    )
 }
 
 function depuis(date: string) {
@@ -90,6 +144,10 @@ export default function Incidents() {
     function choisir(incident: Incident) {
         setChoisiId(incident.id)
         carte?.flyTo([incident.latitude, incident.longitude], 14)
+    }
+
+    function changerUrgence(id: number, urgence: Incident["urgence"]) {
+        setIncidents(incidents.map((incident) => (incident.id === id ? { ...incident, urgence } : incident)))
     }
 
     const incidentsAffiches = incidents.filter((incident) => filtre === "Tous" || incident.status === filtre)
@@ -158,11 +216,11 @@ export default function Incidents() {
                     )}
 
                     {incidentsAffiches.map((incident) => (
-                        <li key={incident.id}>
+                        <li key={incident.id} className={`overflow-hidden rounded-2xl border bg-graphite transition-colors ${incident.id === choisiId ? "border-rouge-alerte glow-rouge" : "border-gris-texte/40 hover:border-gris-trait/60"}`}>
                             <button
                                 type="button"
                                 onClick={() => choisir(incident)}
-                                className={`flex w-full cursor-pointer flex-col gap-3 rounded-2xl border bg-graphite p-5 text-left transition-colors ${incident.id === choisiId ? "border-rouge-alerte glow-rouge" : "border-gris-texte/40 hover:border-gris-trait/60"}`}
+                                className="flex w-full cursor-pointer flex-col gap-3 p-5 text-left"
                             >
                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                     <span className="rounded-full bg-fond-clair px-3 py-1 text-xs font-semibold italic uppercase tracking-[0.2em] text-noir">
@@ -190,6 +248,7 @@ export default function Incidents() {
                                     </div>
                                 </dl>
                             </button>
+                            <ActionsIncident incident={incident} onUrgence={(urgence) => changerUrgence(incident.id, urgence)} />
                         </li>
                     ))}
                 </ul>

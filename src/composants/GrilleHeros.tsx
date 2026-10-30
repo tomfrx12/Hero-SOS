@@ -1,6 +1,7 @@
 import { useState } from "react"
 import CarteHeros from "./ui/CarteHeros"
 import FenetreInfos from "./ui/FenetreInfos"
+import { URL_API } from "../services/api"
 
 export interface Heros {
     id: number
@@ -42,7 +43,7 @@ export default function GrilleHeros({ heros, deployee }: { heros: Heros[], deplo
                         deployee={deployee}
                         onClick={() => setSelection(h.id)}
                         nom={h.pseudo}
-                        photo={h.photo ?? undefined}
+                        photo={h.photo ? URL_API + h.photo : undefined}
                         accent={accents[i % accents.length]}
                         stats={statsHeros(h)}
                     />
@@ -52,7 +53,7 @@ export default function GrilleHeros({ heros, deployee }: { heros: Heros[], deplo
             {selectionne && (
                 <FenetreInfos
                     nom={selectionne.pseudo}
-                    photo={selectionne.photo ?? undefined}
+                    photo={selectionne.photo ? URL_API + selectionne.photo : undefined}
                     accent={accents[indexSelection % accents.length]}
                     stats={statsHeros(selectionne)}
                     infos={[
