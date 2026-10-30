@@ -1,7 +1,7 @@
 import { startTransition, useState } from "react"
 import { Link, NavLink, useLocation, useNavigate } from "react-router"
 import { useLenis } from "lenis/react"
-import { Menu, Siren, X } from "lucide-react"
+import { LogOut, Menu, Siren, X } from "lucide-react"
 import Bouton from "./ui/Bouton"
 import { rolesSignalement, useSession } from "../contexte/session"
 
@@ -55,7 +55,10 @@ export default function Header() {
                     {!chargement && utilisateur && (
                         <>
                             <NavLink to="/profil" className={`${classeLien} font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white`}>Profil</NavLink>
-                            <button type="button" onClick={seDeconnecter}>Déconnexion</button>
+                            <button type="button" onClick={seDeconnecter} className="inline-flex items-center gap-2 font-display text-xl font-black italic uppercase tracking-wide text-gris-trait/60 transition-colors hover:text-rouge-alerte">
+                                <LogOut size={18} strokeWidth={2.5} />
+                                Déconnexion
+                            </button>
                             {rolesSignalement.includes(utilisateur.role) && (
                                 <Bouton to="/profil/signaler-incidents" className="rounded-md border border-rouge-alerte px-5 py-2 font-display text-lg font-bold uppercase hover:bg-rouge-profond" icone={Siren}>
                                     Signaler un incident
