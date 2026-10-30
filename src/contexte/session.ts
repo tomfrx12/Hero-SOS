@@ -5,11 +5,24 @@ export type Role = "Citoyens" | "SuperHeros" | "SuperVillains" | "Administrateur
 export interface Utilisateur {
     id: number
     email: string
+    email_en_attente: string | null
     nom: string
     prenom: string
     pseudo: string | null
+    civilite: string
+    date_de_naissance: string
+    numero_tel: string
+    photo_profil: string | null
+    adresse: string
+    complement_adresse: string | null
+    ville: string
+    code_postal: string
+    pays: string
+    newsletter: boolean
     role: Role
     statut_compte: "EnAttente" | "Actif" | "Desactive"
+    createdAt: string
+    verifiedAt: string | null
 }
 
 export interface Session {
@@ -17,6 +30,8 @@ export interface Session {
     chargement: boolean
     connexion: (identifiant: string, motDePasse: string) => Promise<void>
     deconnexion: () => void
+    // Après une modification du profil, pour mettre à jour l'utilisateur affiché partout
+    modifierUtilisateur: (utilisateur: Utilisateur) => void
 }
 
 export const SessionContext = createContext<Session | null>(null)
@@ -26,6 +41,7 @@ export function useSession() {
     if (!session) throw new Error("useSession doit être utilisé dans <SessionProvider>")
     return session
 }
+
 
 export function accueilDuRole(role: Role) {
     return role === "Administrateurs" ? "/dashboard-admin" : "/profil"

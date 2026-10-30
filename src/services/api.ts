@@ -1,7 +1,13 @@
-const URL_API = import.meta.env.VITE_API_URL
+export const URL_API = import.meta.env.VITE_API_URL
 
 export async function appelApi(chemin: string, methode = "GET", corps?: unknown) {
-    const headers: Record<string, string> = { "Content-Type": "application/json" }
+    // Un fichier (photo de profil) part en FormData, le reste en JSON
+    const estFormulaire = corps instanceof FormData
+
+    const headers: Record<string, string> = {}
+    if (!estFormulaire) {
+        headers["Content-Type"] = "application/json"
+    }
 
     const token = localStorage.getItem("token")
     if (token) {
@@ -11,7 +17,7 @@ export async function appelApi(chemin: string, methode = "GET", corps?: unknown)
     const reponse = await fetch(URL_API + chemin, {
         method: methode,
         headers,
-        body: JSON.stringify(corps),
+        body: estFormulaire ? corps : JSON.stringify(corps),
     })
     const donnees = await reponse.json()
 
