@@ -2,6 +2,7 @@ import { ReactLenis } from 'lenis/react'
 import { Route, Routes } from 'react-router'
 import Layout from './composants/Layout'
 import SessionProvider from './contexte/SessionProvider'
+import { rolesSignalement } from './contexte/session'
 import RouteProtegee from './composants/RouteProtegee'
 import RouteNonConnecte from './composants/RouteNonConnecte'
 import Index from './pages/Index'
@@ -46,11 +47,15 @@ export default function App() {
               <Route element={<RouteProtegee />}>
                 <Route path="/profil" element={<ProfilLayout />}>
                   <Route index element={<Profil />} />
-                  <Route path="incidents" element={<ProfilIncidents />} />
-                  <Route path="signaler-incidents" element={<ProfilSignalerIncident />} />
                   <Route path="informations" element={<ProfilInformations />} />
-                  <Route path="statistiques" element={<ProfilStatistiques />} />
-                  <Route path="reputation" element={<ProfilReputation />} />
+                  <Route element={<RouteProtegee roles={rolesSignalement} />}>
+                    <Route path="incidents" element={<ProfilIncidents />} />
+                    <Route path="signaler-incidents" element={<ProfilSignalerIncident />} />
+                  </Route>
+                  <Route element={<RouteProtegee roles={["SuperHeros"]} />}>
+                    <Route path="statistiques" element={<ProfilStatistiques />} />
+                    <Route path="reputation" element={<ProfilReputation />} />
+                  </Route>
                 </Route>
               </Route>
 

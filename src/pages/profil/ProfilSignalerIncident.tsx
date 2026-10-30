@@ -4,6 +4,7 @@ import Champ from "../../composants/Champ"
 import ChampAdresse, { type Adresse } from "../../composants/ChampAdresse"
 import ChampCarte from "../../composants/ChampCarte"
 import Bouton from "../../composants/ui/Bouton"
+import { useSession } from "../../contexte/session"
 import { appelApi } from "../../services/api"
 
 const TYPES_INCIDENT = [
@@ -25,6 +26,8 @@ const urgences = [
 
 const formulaireVide = {
     type: "",
+    // Seul un administrateur choisit la priorité, l'API l'ignore pour les citoyens
+    urgence: "Normale",
     complement_adresse: "",
     description: "",
 }
@@ -32,6 +35,7 @@ const formulaireVide = {
 const styleLegend = "mb-4 font-display text-xl sm:text-2xl font-black italic uppercase text-white"
 
 export default function ProfilSignalerIncident() {
+    const { utilisateur } = useSession()
     const [formulaire, setFormulaire] = useState(formulaireVide)
     const [adresse, setAdresse] = useState<Adresse | null>(null)
     const [modeLocalisation, setModeLocalisation] = useState<"adresse" | "carte">("adresse")
@@ -137,6 +141,25 @@ export default function ProfilSignalerIncident() {
                                 <ChevronDown size={18} className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-gris-trait/60" />
                             </span>
                         </label>
+
+                        {utilisateur?.role === "Administrateurs" && (
+                            <label className="mt-4 flex flex-col gap-2">
+                                <span className="libelle">Priorité</span>
+                                <span className="relative">
+                                    <select
+                                        name="urgence"
+                                        value={formulaire.urgence}
+                                        onChange={modifier}
+                                        className="w-full appearance-none rounded-xl border border-gris-texte/60 bg-noir py-3 pr-10 pl-4 text-fond-clair outline-none transition-colors focus:border-rouge-alerte focus:glow-rouge"
+                                    >
+                                        <option value="Haute">Haute</option>
+                                        <option value="Normale">Normale</option>
+                                        <option value="Basse">Basse</option>
+                                    </select>
+                                    <ChevronDown size={18} className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-gris-trait/60" />
+                                </span>
+                            </label>
+                        )}
                     </fieldset>
 
                     <fieldset>

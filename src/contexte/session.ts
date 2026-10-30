@@ -42,6 +42,8 @@ export function useSession() {
     return session
 }
 
+// Rôles qui peuvent signaler un incident (les mêmes que pour POST /incidents dans l'API)
+export const rolesSignalement: Role[] = ["Citoyens", "Administrateurs"]
 
 export function accueilDuRole(role: Role) {
     return role === "Administrateurs" ? "/dashboard-admin" : "/profil"

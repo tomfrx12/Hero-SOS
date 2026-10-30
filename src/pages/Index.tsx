@@ -7,6 +7,7 @@ import BoutonRond from "../composants/ui/BoutonRond"
 import Carte, { type InfoCarte } from "../composants/ui/Carte"
 import CarteHeros from "../composants/ui/CarteHeros"
 import Pagination from "../composants/ui/Pagination"
+import { rolesSignalement, useSession } from "../contexte/session"
 import { appelApi } from "../services/api"
 
 interface Incident {
@@ -80,6 +81,9 @@ function versCarte(incident: Incident) {
 }
 
 export default function Index() {
+    const { utilisateur } = useSession()
+    // Un visiteur voit aussi le bouton, il sera envoyé vers la connexion
+    const peutSignaler = !utilisateur || rolesSignalement.includes(utilisateur.role)
     const fondRef = useRef<HTMLImageElement>(null)
     const titreRef = useRef<HTMLDivElement>(null)
 
@@ -128,8 +132,12 @@ export default function Index() {
                     </h1>
                     <p className="text-lg font-semibold libelle relative mt-4 text-noir!">Un héros, un appel</p>
                     <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-                        <Bouton to="/profil/signaler-incidents" icone={Siren}>Signaler un incident</Bouton>
-                        <Bouton to="/profil/incidents" variante="secondaire" icone={Zap}>Voir les incidents</Bouton>
+                        {peutSignaler && (
+                            <>
+                                <Bouton to="/profil/signaler-incidents" icone={Siren}>Signaler un incident</Bouton>
+                                <Bouton to="/profil/incidents" variante="secondaire" icone={Zap}>Voir les incidents</Bouton>
+                            </>
+                        )}
                     </div>
                 </div>
 
@@ -229,9 +237,11 @@ export default function Index() {
                         <h2 className="ombre-bd text-[clamp(2rem,4vw,3rem)] text-white">Un vilain en vue ?</h2>
                         <p className="mt-1 text-sm! text-white/80">Signale-le maintenant, un héros arrive en quelques minutes.</p>
                     </div>
-                    <Link to="/profil/signaler-incidents" className="bouton-bd w-full shrink-0 rounded-full px-7 py-3 text-lg sm:w-auto">
-                        Signaler un incident
-                    </Link>
+                    {peutSignaler && (
+                        <Link to="/profil/signaler-incidents" className="bouton-bd w-full shrink-0 rounded-full px-7 py-3 text-lg sm:w-auto">
+                            Signaler un incident
+                        </Link>
+                    )}
                 </div>
             </section>
         </>

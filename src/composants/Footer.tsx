@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 import { Mail, Send } from "lucide-react"
 import Bouton from "./ui/Bouton"
-import { useSession } from "../contexte/session"
+import { rolesSignalement, useSession } from "../contexte/session"
 
 export default function Footer() {
     const { utilisateur, chargement } = useSession()
@@ -32,7 +32,7 @@ export default function Footer() {
                     <span className="libelle mb-1">Navigation</span>
                     <Link to="/super-heros" className="text-gris-trait/70 transition-colors hover:text-white">Super Héros</Link>
                     <Link to="/super-vilains" className="text-gris-trait/70 transition-colors hover:text-white">Super Vilains</Link>
-                    {!chargement && utilisateur && (
+                    {!chargement && utilisateur && rolesSignalement.includes(utilisateur.role) && (
                         <Link to="/profil/signaler-incidents" className="text-gris-trait/70 transition-colors hover:text-white">Signaler un incident</Link>
                     )}
                     {!chargement && !utilisateur && (
