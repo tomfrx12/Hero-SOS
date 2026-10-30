@@ -124,6 +124,12 @@
     }
 }
 
+@keyframes defilement {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
 /* Section statistiques HUD */
 
 @utility texte-chrome {
