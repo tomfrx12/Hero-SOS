@@ -11,6 +11,7 @@ import Inscription from './pages/Inscription'
 import MotDePasseOublie from './pages/MotDePasseOublie'
 import SuperHeros from './pages/SuperHeros'
 import SuperVilains from './pages/SuperVilains'
+import Incidents from './pages/Incidents'
 import ProfilLayout from './composants/ProfilLayout'
 import Profil from './pages/profil/Profil'
 import ProfilIncidents from './pages/profil/ProfilIncidents'
@@ -37,6 +38,7 @@ export default function App() {
               <Route path="/mentions-legales" element={<MentionsLegales />} />
               <Route path="/super-heros" element={<SuperHeros />} />
               <Route path="/super-vilains" element={<SuperVilains />} />
+              <Route path="/incidents" element={<Incidents />} />
 
               <Route element={<RouteNonConnecte />}>
                 <Route path="/connexion" element={<Connexion />} />

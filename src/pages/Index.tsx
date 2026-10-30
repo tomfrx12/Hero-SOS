@@ -132,12 +132,8 @@ export default function Index() {
                     </h1>
                     <p className="text-lg font-semibold libelle relative mt-4 text-noir!">Un héros, un appel</p>
                     <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-                        {peutSignaler && (
-                            <>
-                                <Bouton to="/profil/signaler-incidents" icone={Siren}>Signaler un incident</Bouton>
-                                <Bouton to="/profil/incidents" variante="secondaire" icone={Zap}>Voir les incidents</Bouton>
-                            </>
-                        )}
+                        {peutSignaler && <Bouton to="/profil/signaler-incidents" icone={Siren}>Signaler un incident</Bouton>}
+                        <Bouton to="/incidents" variante="secondaire" icone={Zap}>Voir les incidents</Bouton>
                     </div>
                 </div>
 

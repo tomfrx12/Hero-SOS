@@ -32,6 +32,7 @@ export default function Footer() {
                     <span className="libelle mb-1">Navigation</span>
                     <Link to="/super-heros" className="text-gris-trait/70 transition-colors hover:text-white">Super Héros</Link>
                     <Link to="/super-vilains" className="text-gris-trait/70 transition-colors hover:text-white">Super Vilains</Link>
+                    <Link to="/incidents" className="text-gris-trait/70 transition-colors hover:text-white">Incidents en cours</Link>
                     {!chargement && utilisateur && rolesSignalement.includes(utilisateur.role) && (
                         <Link to="/profil/signaler-incidents" className="text-gris-trait/70 transition-colors hover:text-white">Signaler un incident</Link>
                     )}

@@ -46,6 +46,7 @@ export default function Header() {
                 >
                     <NavLink to="/super-heros" className={classeLien}>Super Héros</NavLink>
                     <NavLink to="/super-vilains" className={classeLien}>Super Vilains</NavLink>
+                    <NavLink to="/incidents" className={classeLien}>Incidents</NavLink>
                     
                     {utilisateur?.role === "Administrateurs" && (
                         <NavLink to="/dashboard-admin" className={`${classeLien} font-display text-lg font-bold uppercase text-gris-trait/70 transition-colors hover:text-white`}>Dashboard Admin</NavLink>
