@@ -22,7 +22,7 @@ const couleurValeur = {
 export default function Carte({ titre, meta, statut, temps, infos }: CarteProps) {
     return (
         <article className="overflow-hidden rounded-2xl border border-gris-texte/40 bg-graphite text-left shadow-xl shadow-noir/60">
-            <div className="degrade-action halftone flex aspect-[4/3] flex-col p-6">
+            <div className="degrade-action halftone flex aspect-4/3 flex-col p-6">
                 {(statut || temps) && (
                     <div className="flex items-center justify-between">
                         {statut ? (
