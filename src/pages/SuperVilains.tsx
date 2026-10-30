@@ -61,7 +61,7 @@ export default function SuperVilains() {
             {vilains?.length === 0 && <p className="mt-8 text-gris-trait/70 md:mt-12">Aucun vilain pour le moment.</p>}
             {vilains && vilains.length > 0 && vilainsFiltres?.length === 0 && <p className="mt-8 text-gris-trait/70 md:mt-12">Aucun vilain ne correspond à ta recherche.</p>}
             {vilainsFiltres && vilainsFiltres.length > 0 && (
-                <div className="mt-8 grid gap-5 md:mt-12 sm:grid-cols-2 lg:grid-cols-6">
+                <div className="mt-8 grid gap-5 md:mt-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
                     {vilainsFiltres.map((v, i) => (
                         <CarteHeros
                             key={v.id}

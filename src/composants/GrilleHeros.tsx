@@ -35,7 +35,7 @@ export default function GrilleHeros({ heros, deployee }: { heros: Heros[], deplo
 
     return (
         <>
-            <div className={`${deployee ? "lg:grid-cols-6" : "grille-heros lg:grid-cols-4"} mt-8 grid gap-5 md:mt-12 sm:grid-cols-2`}>
+            <div className={`${deployee ? "md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6" : "grille-heros lg:grid-cols-4"} mt-8 grid gap-5 md:mt-12 sm:grid-cols-2`}>
                 {heros.map((h, i) => (
                     <CarteHeros
                         key={h.id}
