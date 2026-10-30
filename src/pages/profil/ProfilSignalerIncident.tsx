@@ -3,7 +3,6 @@ import { ChevronDown, Map, MapPin, Siren } from "lucide-react"
 import Champ from "../../composants/Champ"
 import ChampAdresse, { type Adresse } from "../../composants/ChampAdresse"
 import ChampCarte from "../../composants/ChampCarte"
-import IncidentsProches from "../../composants/IncidentsProches"
 import Bouton from "../../composants/ui/Bouton"
 import { appelApi } from "../../services/api"
 
@@ -175,8 +174,6 @@ export default function ProfilSignalerIncident() {
                             ) : (
                                 <ChampCarte onChoisir={setAdresse} />
                             )}
-
-                            {adresse && <IncidentsProches key={`${adresse.latitude},${adresse.longitude}`} latitude={adresse.latitude} longitude={adresse.longitude} />}
 
                             <Champ
                                 label="Complément d'adresse (facultatif)"
