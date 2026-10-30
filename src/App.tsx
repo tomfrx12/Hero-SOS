@@ -19,6 +19,7 @@ import ProfilSignalerIncident from './pages/profil/ProfilSignalerIncident'
 import ProfilInformations from './pages/profil/ProfilInformations'
 import ProfilStatistiques from './pages/profil/ProfilStatistiques'
 import ProfilReputation from './pages/profil/ProfilReputation'
+import ProfilInterventions from './pages/profil/ProfilInterventions'
 import MentionsLegales from './pages/MentionsLegales'
 import AdminLayout from './composants/AdminLayout'
 import DashboardAdmin from './pages/admin/DashboardAdmin'
@@ -55,6 +56,7 @@ export default function App() {
                     <Route path="signaler-incidents" element={<ProfilSignalerIncident />} />
                   </Route>
                   <Route element={<RouteProtegee roles={["SuperHeros"]} />}>
+                    <Route path="interventions" element={<ProfilInterventions />} />
                     <Route path="statistiques" element={<ProfilStatistiques />} />
                     <Route path="reputation" element={<ProfilReputation />} />
                   </Route>
