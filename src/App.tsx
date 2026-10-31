@@ -27,6 +27,7 @@ import AdminIncidents from './pages/admin/AdminIncidents'
 import AdminIncident from './pages/admin/AdminIncident'
 import AdminUtilisateurs from './pages/admin/AdminUtilisateurs'
 import AdminUtilisateur from './pages/admin/AdminUtilisateur'
+import AdminNewsletter from './pages/admin/AdminNewsletter'
 import AdminFilms from './pages/admin/AdminFilms'
 import AdminAvis from './pages/admin/AdminAvis'
 
@@ -74,6 +75,7 @@ export default function App() {
                   <Route path="utilisateurs/:id" element={<AdminUtilisateur />} />
                   <Route path="avis" element={<AdminAvis />} />
                   <Route path="films" element={<AdminFilms />} />
+                  <Route path="newsletter" element={<AdminNewsletter />} />
                 </Route>
               </Route>
             </Routes>
