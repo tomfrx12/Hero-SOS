@@ -28,6 +28,7 @@ import AdminIncident from './pages/admin/AdminIncident'
 import AdminUtilisateurs from './pages/admin/AdminUtilisateurs'
 import AdminUtilisateur from './pages/admin/AdminUtilisateur'
 import AdminFilms from './pages/admin/AdminFilms'
+import AdminAvis from './pages/admin/AdminAvis'
 
 export default function App() {
   return (
@@ -71,6 +72,7 @@ export default function App() {
                   <Route path="incidents/:id" element={<AdminIncident />} />
                   <Route path="utilisateurs" element={<AdminUtilisateurs />} />
                   <Route path="utilisateurs/:id" element={<AdminUtilisateur />} />
+                  <Route path="avis" element={<AdminAvis />} />
                   <Route path="films" element={<AdminFilms />} />
                 </Route>
               </Route>
