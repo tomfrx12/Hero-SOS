@@ -26,6 +26,7 @@ import DashboardAdmin from './pages/admin/DashboardAdmin'
 import AdminIncidents from './pages/admin/AdminIncidents'
 import AdminIncident from './pages/admin/AdminIncident'
 import AdminUtilisateurs from './pages/admin/AdminUtilisateurs'
+import AdminUtilisateur from './pages/admin/AdminUtilisateur'
 import AdminFilms from './pages/admin/AdminFilms'
 
 export default function App() {
@@ -69,6 +70,7 @@ export default function App() {
                   <Route path="incidents" element={<AdminIncidents />} />
                   <Route path="incidents/:id" element={<AdminIncident />} />
                   <Route path="utilisateurs" element={<AdminUtilisateurs />} />
+                  <Route path="utilisateurs/:id" element={<AdminUtilisateur />} />
                   <Route path="films" element={<AdminFilms />} />
                 </Route>
               </Route>
