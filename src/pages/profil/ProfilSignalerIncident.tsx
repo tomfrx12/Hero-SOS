@@ -6,17 +6,7 @@ import ChampCarte from "../../composants/ChampCarte"
 import Bouton from "../../composants/ui/Bouton"
 import { useSession } from "../../contexte/session"
 import { appelApi } from "../../services/api"
-
-const TYPES_INCIDENT = [
-    "Attaque de super-vilain",
-    "Catastrophe naturelle",
-    "Incendie",
-    "Accident de la route",
-    "Personnes en danger",
-    "Menace chimique ou biologique",
-    "Infrastructure endommagée",
-    "Autre",
-]
+import { typesIncident } from "../../services/incidents"
 
 const urgences = [
     "Un héros est alerté dans la minute",
@@ -134,7 +124,7 @@ export default function ProfilSignalerIncident() {
                                     className="w-full appearance-none rounded-xl border border-gris-texte/60 bg-noir py-3 pr-10 pl-4 text-fond-clair outline-none transition-colors focus:border-rouge-alerte focus:glow-rouge"
                                 >
                                     <option value="" disabled>Choisir un type</option>
-                                    {TYPES_INCIDENT.map(type => (
+                                    {typesIncident.map(type => (
                                         <option key={type} value={type}>{type}</option>
                                     ))}
                                 </select>
