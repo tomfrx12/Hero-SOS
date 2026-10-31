@@ -31,7 +31,11 @@ import AdminUtilisateur from './pages/admin/AdminUtilisateur'
 import AdminNewsletter from './pages/admin/AdminNewsletter'
 import AdminFilms from './pages/admin/AdminFilms'
 import AdminAvis from './pages/admin/AdminAvis'
+import AdminArticles from './pages/admin/AdminArticles'
+import AdminArticle from './pages/admin/AdminArticle'
 import NewsletterDesinscrire from './pages/NewsletterDesinscrire'
+import Articles from './pages/Articles'
+import Article from './pages/Article'
 
 export default function App() {
   return (
@@ -47,6 +51,8 @@ export default function App() {
               <Route path="/super-vilains" element={<SuperVilains />} />
               <Route path="/incidents" element={<Incidents />} />
               <Route path="/newsletter/desinscrire" element={<NewsletterDesinscrire />} />
+              <Route path="/blog" element={<Articles />} />
+              <Route path="/blog/:id" element={<Article />} />
 
               <Route element={<RouteNonConnecte />}>
                 <Route path="/connexion" element={<Connexion />} />
@@ -80,6 +86,9 @@ export default function App() {
                   <Route path="avis" element={<AdminAvis />} />
                   <Route path="films" element={<AdminFilms />} />
                   <Route path="newsletter" element={<AdminNewsletter />} />
+                  <Route path="articles" element={<AdminArticles />} />
+                  <Route path="articles/nouveau" element={<AdminArticle />} />
+                  <Route path="articles/:id/modifier" element={<AdminArticle />} />
                 </Route>
               </Route>
             </Routes>
