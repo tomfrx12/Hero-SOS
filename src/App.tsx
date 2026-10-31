@@ -21,12 +21,16 @@ import ProfilStatistiques from './pages/profil/ProfilStatistiques'
 import ProfilReputation from './pages/profil/ProfilReputation'
 import ProfilInterventions from './pages/profil/ProfilInterventions'
 import MentionsLegales from './pages/MentionsLegales'
+import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite'
 import AdminLayout from './composants/AdminLayout'
 import DashboardAdmin from './pages/admin/DashboardAdmin'
 import AdminIncidents from './pages/admin/AdminIncidents'
 import AdminIncident from './pages/admin/AdminIncident'
 import AdminUtilisateurs from './pages/admin/AdminUtilisateurs'
+import AdminUtilisateur from './pages/admin/AdminUtilisateur'
+import AdminNewsletter from './pages/admin/AdminNewsletter'
 import AdminFilms from './pages/admin/AdminFilms'
+import AdminAvis from './pages/admin/AdminAvis'
 
 export default function App() {
   return (
@@ -37,6 +41,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
               <Route path="/super-heros" element={<SuperHeros />} />
               <Route path="/super-vilains" element={<SuperVilains />} />
               <Route path="/incidents" element={<Incidents />} />
@@ -69,7 +74,10 @@ export default function App() {
                   <Route path="incidents" element={<AdminIncidents />} />
                   <Route path="incidents/:id" element={<AdminIncident />} />
                   <Route path="utilisateurs" element={<AdminUtilisateurs />} />
+                  <Route path="utilisateurs/:id" element={<AdminUtilisateur />} />
+                  <Route path="avis" element={<AdminAvis />} />
                   <Route path="films" element={<AdminFilms />} />
+                  <Route path="newsletter" element={<AdminNewsletter />} />
                 </Route>
               </Route>
             </Routes>

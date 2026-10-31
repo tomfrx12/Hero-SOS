@@ -39,23 +39,28 @@ export default function Footer() {
                     {!chargement && !utilisateur && (
                         <Link to="/connexion" className="text-gris-trait/70 transition-colors hover:text-white">Connexion</Link>
                     )}
-                    <Link to="/mentions-legales" className="text-gris-trait/70 transition-colors hover:text-white">Mentions légales</Link>
                 </nav>
             </div>
             
-            <div className="flex justify-between mx-auto max-w-[80%] text-gris-trait/50 py-4">
-                <div>
-                    Copyright © {new Date().getFullYear()} Héros SOS - Web 4 Heroes
-                </div>
-                <div>
-                    Réalisé par {" "}
-                    <a href="https://tom-fourneaux.fr" target="_blank" className="underline hover:text-rouge-profond">
-                        Tom Fourneaux
-                    </a> 
-                    {" "}et{" "}
-                    <a href="https://nino-rameau.fr" target="_blank" className="underline hover:text-rouge-profond">
-                        Nino Rameau
-                    </a>
+            <div className="bg-graphite text-sm">
+                <div className="flex justify-between mx-auto max-w-[80%] text-gris-trait/50 py-4">
+                    <div>
+                        Copyright © {new Date().getFullYear()} Héros SOS - Web 4 Heroes
+                    </div>
+                    <div className="flex gap-4">
+                        <Link to="/mentions-legales" className="text-gris-trait/70 transition-colors hover:text-white">Mentions légales</Link>
+                        <Link to="/politique-de-confidentialite" className="text-gris-trait/70 transition-colors hover:text-white">Politique de confidentialité</Link>
+                    </div>
+                    <div>
+                        Réalisé par {" "}
+                        <a href="https://tom-fourneaux.fr" target="_blank" className="underline hover:text-rouge-profond">
+                            Tom Fourneaux
+                        </a> 
+                        {" "}et{" "}
+                        <a href="https://nino-rameau.fr" target="_blank" className="underline hover:text-rouge-profond">
+                            Nino Rameau
+                        </a>
+                    </div>
                 </div>
             </div>
         </footer>
