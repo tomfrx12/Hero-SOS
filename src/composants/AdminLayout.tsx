@@ -7,6 +7,7 @@ const onglets: Onglet[] = [
     { to: "/dashboard-admin/avis", label: "Avis" },
     { to: "/dashboard-admin/films", label: "Films" },
     { to: "/dashboard-admin/newsletter", label: "Newsletter" },
+    { to: "/dashboard-admin/articles", label: "Articles" },
 ]
 
 export default function AdminLayout() {

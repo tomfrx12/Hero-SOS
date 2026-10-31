@@ -313,6 +313,60 @@
     }
 }
 
+@utility prose-article {
+    color: var(--color-gris-trait);
+    line-height: 1.75;
+    font-size: 1.0625rem;
+
+    & h1, & h2, & h3 {
+        color: white;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    & p {
+        margin-bottom: 1rem;
+    }
+
+    & a {
+        color: var(--color-cyan-neon);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    & strong { color: white; }
+    & em { color: color-mix(in oklab, var(--color-lavande) 80%, white); }
+
+    & ul, & ol {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+    }
+
+    & ul { list-style-type: disc; }
+    & ol { list-style-type: decimal; }
+
+    & li { margin-bottom: 0.375rem; }
+
+    & blockquote {
+        border-left: 3px solid var(--color-rouge-alerte);
+        padding-left: 1rem;
+        margin: 1.5rem 0;
+        color: color-mix(in oklab, var(--color-gris-trait) 70%, transparent);
+        font-style: italic;
+    }
+
+    & img {
+        max-width: 100%;
+        border-radius: 0.75rem;
+        margin: 1.5rem auto;
+    }
+
+    & hr {
+        border-color: color-mix(in oklab, var(--color-gris-texte) 60%, transparent);
+        margin: 2rem 0;
+    }
+}
+
 @utility liste-puces {
     display: flex;
     flex-direction: column;
