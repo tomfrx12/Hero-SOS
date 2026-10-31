@@ -33,7 +33,6 @@ export default function ProfilInformations() {
     const [coordonnees, setCoordonnees] = useState({
         numero_tel: utilisateur?.numero_tel ?? "",
         complement_adresse: utilisateur?.complement_adresse ?? "",
-        newsletter: utilisateur?.newsletter ?? false,
     })
     // Rempli seulement si l'utilisateur choisit une nouvelle adresse
     const [adresse, setAdresse] = useState<Adresse | null>(null)
@@ -41,6 +40,8 @@ export default function ProfilInformations() {
 
     const [email, setEmail] = useState("")
     const [retourEmail, setRetourEmail] = useState({ message: "", erreur: "" })
+
+    const [retourNewsletter, setRetourNewsletter] = useState({ message: "", erreur: "" })
 
     const [motsDePasse, setMotsDePasse] = useState({ ancien: "", nouveau: "", confirmation: "" })
     const [retourMotDePasse, setRetourMotDePasse] = useState({ message: "", erreur: "" })
@@ -59,6 +60,16 @@ export default function ProfilInformations() {
             setRetourPhoto({ message: "Ta photo a été mise à jour", erreur: "" })
         } catch (err) {
             setRetourPhoto({ message: "", erreur: (err as Error).message })
+        }
+    }
+
+    async function basculerNewsletter() {
+        try {
+            const donnees = await appelApi("/moi", "PATCH", { newsletter: !utilisateur!.newsletter })
+            modifierUtilisateur(donnees.utilisateur)
+            setRetourNewsletter({ message: donnees.utilisateur.newsletter ? "Vous êtes abonné à la newsletter." : "Vous vous êtes désinscrit de la newsletter.", erreur: "" })
+        } catch (err) {
+            setRetourNewsletter({ message: "", erreur: (err as Error).message })
         }
     }
 
@@ -127,10 +138,6 @@ export default function ProfilInformations() {
                         </p>
                     </div>
                     <Champ label="Complément d'adresse" value={coordonnees.complement_adresse} onChange={(e) => setCoordonnees({ ...coordonnees, complement_adresse: e.target.value })} />
-                    <label className="flex cursor-pointer items-center gap-3 text-fond-clair">
-                        <input type="checkbox" checked={coordonnees.newsletter} onChange={(e) => setCoordonnees({ ...coordonnees, newsletter: e.target.checked })} className="size-5 accent-rouge-alerte" />
-                        Recevoir la newsletter
-                    </label>
                     <Bouton type="submit" className="self-start">Enregistrer</Bouton>
                 </form>
             </Bloc>
@@ -144,6 +151,15 @@ export default function ProfilInformations() {
                     <Champ label="Nouvel email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
                     <Bouton type="submit" className="self-start">Demander le changement</Bouton>
                 </form>
+            </Bloc>
+
+            <Bloc titre="Newsletter" message={retourNewsletter.message} erreur={retourNewsletter.erreur}>
+                <p className="text-sm! text-gris-trait/70">
+                    {utilisateur.newsletter ? "Vous êtes actuellement abonné à la newsletter." : "Vous n'êtes pas abonné à la newsletter."}
+                </p>
+                <Bouton onClick={basculerNewsletter} className="self-start">
+                    {utilisateur.newsletter ? "Se désinscrire" : "S'inscrire"}
+                </Bouton>
             </Bloc>
 
             <Bloc titre="Mot de passe" message={retourMotDePasse.message} erreur={retourMotDePasse.erreur}>

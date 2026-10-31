@@ -31,6 +31,7 @@ import AdminUtilisateur from './pages/admin/AdminUtilisateur'
 import AdminNewsletter from './pages/admin/AdminNewsletter'
 import AdminFilms from './pages/admin/AdminFilms'
 import AdminAvis from './pages/admin/AdminAvis'
+import NewsletterDesinscrire from './pages/NewsletterDesinscrire'
 
 export default function App() {
   return (
@@ -45,6 +46,7 @@ export default function App() {
               <Route path="/super-heros" element={<SuperHeros />} />
               <Route path="/super-vilains" element={<SuperVilains />} />
               <Route path="/incidents" element={<Incidents />} />
+              <Route path="/newsletter/desinscrire" element={<NewsletterDesinscrire />} />
 
               <Route element={<RouteNonConnecte />}>
                 <Route path="/connexion" element={<Connexion />} />

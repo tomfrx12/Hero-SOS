@@ -1,10 +1,30 @@
+import { useState, type FormEvent } from "react"
 import { Link } from "react-router"
 import { Mail, Send } from "lucide-react"
 import Bouton from "./ui/Bouton"
 import { rolesSignalement, useSession } from "../contexte/session"
+import { appelApi } from "../services/api"
+
+const CLE_NEWSLETTER = "newsletter_souscrit"
 
 export default function Footer() {
     const { utilisateur, chargement } = useSession()
+    const [email, setEmail] = useState("")
+    const [message, setMessage] = useState("")
+    const [erreur, setErreur] = useState("")
+    const dejaSouscrit = localStorage.getItem(CLE_NEWSLETTER) === "1"
+
+    async function sInscrire(e: FormEvent) {
+        e.preventDefault()
+        try {
+            await appelApi("/newsletter", "POST", { email })
+            localStorage.setItem(CLE_NEWSLETTER, "1")
+            setMessage("Vous êtes abonné à la newsletter !")
+            setErreur("")
+        } catch (err) {
+            setErreur((err as Error).message)
+        }
+    }
 
     return (
         <footer className="mt-auto border-t border-rouge-alerte shadow-[0_-4px_24px_-6px_var(--color-rouge-alerte)] bg-noir text-white">
@@ -17,15 +37,32 @@ export default function Footer() {
 
                 <div className="flex flex-col gap-3">
                     <span className="libelle mb-1">Newsletter</span>
-                    <form className="flex flex-col gap-2 sm:flex-row">
-                        <div className="flex flex-1 items-center gap-2 rounded-full border border-gris-texte/60 bg-graphite px-4 focus-within:border-fond-clair focus-within:glow-clair">
-                            <Mail size={18} className="text-gris-trait/70" />
-                            <input type="email" required placeholder="votre@email.fr" className="w-full bg-transparent py-2 outline-none placeholder:text-gris-trait/40"/>
-                        </div>
-                        <Bouton type="submit" icone={Send}>
-                            S'inscrire
-                        </Bouton>
-                    </form>
+                    {!chargement && utilisateur ? (
+                        <p className="text-sm text-gris-trait/70">
+                            Gérez votre abonnement depuis{" "}
+                            <Link to="/profil/informations" className="underline hover:text-white">Mon compte</Link>.
+                        </p>
+                    ) : dejaSouscrit || message ? (
+                        <p className="text-sm text-fond-clair">{message || "Vous êtes déjà abonné à la newsletter."}</p>
+                    ) : (
+                        <>
+                            <form onSubmit={sInscrire} className="flex flex-col gap-2 sm:flex-row">
+                                <div className="flex flex-1 items-center gap-2 rounded-full border border-gris-texte/60 bg-graphite px-4 focus-within:border-fond-clair focus-within:glow-clair">
+                                    <Mail size={18} className="text-gris-trait/70" />
+                                    <input
+                                        type="email"
+                                        required
+                                        placeholder="votre@email.fr"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full bg-transparent py-2 outline-none placeholder:text-gris-trait/40"
+                                    />
+                                </div>
+                                <Bouton type="submit" icone={Send}>S'inscrire</Bouton>
+                            </form>
+                            {erreur && <p className="text-sm text-rouge-alerte">{erreur}</p>}
+                        </>
+                    )}
                 </div>
                 
                 <nav className="flex flex-col items-center gap-3">
