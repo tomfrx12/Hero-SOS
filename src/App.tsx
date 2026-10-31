@@ -21,6 +21,7 @@ import ProfilStatistiques from './pages/profil/ProfilStatistiques'
 import ProfilReputation from './pages/profil/ProfilReputation'
 import ProfilInterventions from './pages/profil/ProfilInterventions'
 import MentionsLegales from './pages/MentionsLegales'
+import PolitiqueConfidentialite from './pages/PolitiqueConfidentialite'
 import AdminLayout from './composants/AdminLayout'
 import DashboardAdmin from './pages/admin/DashboardAdmin'
 import AdminIncidents from './pages/admin/AdminIncidents'
@@ -40,6 +41,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/mentions-legales" element={<MentionsLegales />} />
+              <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
               <Route path="/super-heros" element={<SuperHeros />} />
               <Route path="/super-vilains" element={<SuperVilains />} />
               <Route path="/incidents" element={<Incidents />} />
