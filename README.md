@@ -153,9 +153,6 @@ En production, le front n'est pas lancé seul : il est construit et déployé av
 | `/super-heros`                  | Liste des super-héros                |
 | `/super-vilains`                | Liste des super-vilains              |
 | `/incidents`                    | Liste des incidents                  |
-| `/blog`                         | Liste des articles publiés           |
-| `/blog/:id`                     | Lecture d'un article                 |
-| `/videotheque`                  | Films recommandés par les super-héros |
 | `/mentions-legales`             | Mentions légales                     |
 | `/politique-de-confidentialite` | Politique de confidentialité         |
 
@@ -164,19 +161,31 @@ En production, le front n'est pas lancé seul : il est construit et déployé av
 | Route                             | Page                      |
 | --------------------------------- | ------------------------- |
 | `/connexion`                      | Connexion                 |
-| `/inscription`                    | Inscription               |
+| `/inscription`                    | Inscription rapide (email et mot de passe) |
 | `/reinitialiser-le-mot-de-passe`  | Mot de passe oublié       |
+
+### Pages réservées aux profils complets
+
+Un compte créé par l'inscription rapide est redirigé vers `/profil/completer` tant que son profil n'est pas complet.
+
+| Route          | Page                                  |
+| -------------- | ------------------------------------- |
+| `/blog`        | Liste des articles publiés            |
+| `/blog/:id`    | Lecture d'un article                  |
+| `/videotheque` | Films recommandés par les super-héros |
 
 ### Espace profil (utilisateurs connectés)
 
 | Route                        | Page                          | Rôles                       |
 | ---------------------------- | ----------------------------- | --------------------------- |
 | `/profil`                    | Profil                        | Tous                        |
+| `/profil/completer`          | Complétion du profil          | Tous                        |
 | `/profil/informations`       | Informations personnelles     | Tous                        |
 | `/profil/incidents`          | Mes incidents                 | Citoyens, Administrateurs   |
 | `/profil/signaler-incidents` | Signaler un incident          | Citoyens, Administrateurs   |
 | `/profil/interventions`      | Interventions                 | Super-héros                 |
 | `/profil/films`              | Ma vidéothèque (recherche et ajout de films) | Super-héros  |
+| `/profil/vilains`            | Gestion des super-vilains     | Super-héros                 |
 | `/profil/statistiques`       | Statistiques                  | Super-héros                 |
 | `/profil/reputation`         | Réputation                    | Super-héros                 |
 
@@ -192,13 +201,14 @@ En production, le front n'est pas lancé seul : il est construit et déployé av
 | `/dashboard-admin/avis`            | Gestion des avis          |
 | `/dashboard-admin/films`           | Validation des films de la vidéothèque |
 | `/dashboard-admin/newsletter`      | Gestion de la newsletter  |
+| `/dashboard-admin/vilains`         | Gestion des super-vilains |
 | `/dashboard-admin/articles`        | Gestion des articles du blog |
 | `/dashboard-admin/articles/nouveau`| Écriture d'un nouvel article |
 | `/dashboard-admin/articles/:id/modifier` | Modification d'un article |
 
 ## Rôles et accès
 
-L'application gère quatre rôles : **Citoyens**, **SuperHeros**, **SuperVillains** et **Administrateurs**. Après la connexion, le jeton renvoyé par l'API est stocké dans le `localStorage` et envoyé à chaque requête (`Authorization: Bearer <token>`). Les administrateurs sont redirigés vers `/dashboard-admin`, les autres utilisateurs vers `/profil`.
+L'application gère trois rôles : **Citoyens**, **SuperHeros** et **Administrateurs**. Les super-vilains n'ont pas de compte. Un citoyen peut demander à devenir super-héros depuis `/profil/informations`. Après la connexion, le jeton renvoyé par l'API est stocké dans le `localStorage` et envoyé à chaque requête (`Authorization: Bearer <token>`). Les administrateurs sont redirigés vers `/dashboard-admin`, les autres utilisateurs vers `/profil`.
 
 ## Auteurs
 
