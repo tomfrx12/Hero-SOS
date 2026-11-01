@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-export type Role = "Citoyens" | "SuperHeros" | "SuperVillains" | "Administrateurs"
+export type Role = "Citoyens" | "SuperHeros" | "Administrateurs"
 
 export interface Utilisateur {
     id: number
