@@ -34,6 +34,7 @@ export default function ProfilInformations() {
         numero_tel: utilisateur?.numero_tel ?? "",
         complement_adresse: utilisateur?.complement_adresse ?? "",
     })
+
     // Rempli seulement si l'utilisateur choisit une nouvelle adresse
     const [adresse, setAdresse] = useState<Adresse | null>(null)
     const [retourCoordonnees, setRetourCoordonnees] = useState({ message: "", erreur: "" })
@@ -133,9 +134,13 @@ export default function ProfilInformations() {
                     <Champ label="Téléphone" type="tel" required value={coordonnees.numero_tel} onChange={(e) => setCoordonnees({ ...coordonnees, numero_tel: e.target.value })} />
                     <div className="flex flex-col gap-2">
                         <ChampAdresse onChoisir={setAdresse} />
-                        <p className="text-sm! text-gris-trait/60">
-                            Adresse actuelle : {utilisateur.adresse}, {utilisateur.code_postal} {utilisateur.ville}
-                        </p>
+                        {utilisateur.adresse ? (
+                            <p className="text-sm! text-gris-trait/60">
+                                Adresse actuelle : {utilisateur.adresse}, {utilisateur.code_postal} {utilisateur.ville}
+                            </p>
+                        ) : (
+                            <p className="text-sm! text-gris-trait/60">Aucune adresse enregistrée.</p>
+                        )}
                     </div>
                     <Champ label="Complément d'adresse" value={coordonnees.complement_adresse} onChange={(e) => setCoordonnees({ ...coordonnees, complement_adresse: e.target.value })} />
                     <Bouton type="submit" className="self-start">Enregistrer</Bouton>
