@@ -19,13 +19,18 @@ export default function SessionProvider({ children }: { children: ReactNode }) {
         setUtilisateur(donnees.utilisateur)
     }
 
+    function connecter(token: string, utilisateur: Utilisateur) {
+        localStorage.setItem("token", token)
+        setUtilisateur(utilisateur)
+    }
+
     function deconnexion() {
         localStorage.removeItem("token")
         setUtilisateur(null)
     }
 
     return (
-        <SessionContext.Provider value={{ utilisateur, chargement, connexion, deconnexion, modifierUtilisateur: setUtilisateur }}>
+        <SessionContext.Provider value={{ utilisateur, chargement, connexion, connecter, deconnexion, modifierUtilisateur: setUtilisateur }}>
             {children}
         </SessionContext.Provider>
     )

@@ -36,11 +36,19 @@ export default function Header() {
                     <img src="/logo.webp" alt="Héros SOS" className="h-14 w-14 md:h-16 md:w-16" />
                 </Link>
 
-                <button type="button" onClick={() => setMenuOuvert(!menuOuvert)} className="md:hidden">
+                <button
+                    type="button"
+                    aria-label={menuOuvert ? "Fermer le menu" : "Ouvrir le menu"}
+                    aria-expanded={menuOuvert}
+                    aria-controls="nav-principale"
+                    onClick={() => setMenuOuvert(!menuOuvert)}
+                    className="md:hidden"
+                >
                     {menuOuvert ? <X size={28} /> : <Menu size={28} />}
                 </button>
 
                 <nav
+                    id="nav-principale"
                     onClick={fermerMenu}
                     className={`${menuOuvert ? "flex" : "hidden"} w-full flex-col items-start gap-4 pt-4 md:flex md:w-auto md:flex-row md:items-center md:gap-8 md:pt-0`}
                 >

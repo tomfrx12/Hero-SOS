@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { appelApi, URL_API } from "../services/api"
 import type { FilmPublic } from "../services/videotheque"
+import Chargement from "../composants/ui/Chargement"
 
 export default function Videotheque() {
     const [films, setFilms] = useState<FilmPublic[]>([])
@@ -23,8 +24,8 @@ export default function Videotheque() {
                 Les films recommandés par nos super-héros.
             </p>
 
-            {erreur && <p className="mt-6 text-rouge-alerte">{erreur}</p>}
-            {chargement && <p className="mt-6 text-gris-trait/70">Chargement…</p>}
+            {erreur && <p role="alert" className="mt-6 text-rouge-alerte">{erreur}</p>}
+            {chargement && <Chargement />}
 
             {!chargement && films.length === 0 && !erreur && (
                 <p className="mt-6 text-gris-trait/70">Aucun film dans la vidéothèque pour l'instant.</p>

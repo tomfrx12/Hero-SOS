@@ -37,6 +37,10 @@ import Articles from './pages/Articles'
 import Article from './pages/Article'
 import Videotheque from './pages/Videotheque'
 import ProfilFilms from './pages/profil/ProfilFilms'
+import PageIntrouvable from './pages/PageIntrouvable'
+import InscriptionRapide from './pages/InscriptionRapide'
+import CompletionProfil from './pages/profil/CompletionProfil'
+import RouteProfilComplet from './composants/RouteProfilComplet'
 
 export default function App() {
   return (
@@ -51,17 +55,21 @@ export default function App() {
               <Route path="/super-heros" element={<SuperHeros />} />
               <Route path="/super-vilains" element={<SuperVilains />} />
               <Route path="/incidents" element={<Incidents />} />
-              <Route path="/blog" element={<Articles />} />
-              <Route path="/blog/:id" element={<Article />} />
-              <Route path="/videotheque" element={<Videotheque />} />
+              <Route element={<RouteProfilComplet />}>
+                <Route path="/blog" element={<Articles />} />
+                <Route path="/blog/:id" element={<Article />} />
+                <Route path="/videotheque" element={<Videotheque />} />
+              </Route>
 
               <Route element={<RouteNonConnecte />}>
                 <Route path="/connexion" element={<Connexion />} />
                 <Route path="/inscription" element={<Inscription />} />
+                <Route path="/inscription-rapide" element={<InscriptionRapide />} />
                 <Route path="/reinitialiser-le-mot-de-passe" element={<MotDePasseOublie />} />
               </Route>
 
               <Route element={<RouteProtegee />}>
+                <Route path="/profil/completer" element={<CompletionProfil />} />
                 <Route path="/profil" element={<ProfilLayout />}>
                   <Route index element={<Profil />} />
                   <Route path="informations" element={<ProfilInformations />} />
@@ -93,6 +101,7 @@ export default function App() {
                   <Route path="articles/:id/modifier" element={<AdminArticle />} />
                 </Route>
               </Route>
+              <Route path="*" element={<PageIntrouvable />} />
             </Routes>
           </Layout>
         </SessionProvider>

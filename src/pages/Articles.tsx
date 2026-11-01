@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router"
 import { appelApi, URL_API } from "../services/api"
 import type { ArticleResume } from "../services/articles"
+import Chargement from "../composants/ui/Chargement"
 
 export default function Articles() {
     const [articles, setArticles] = useState<ArticleResume[]>([])
@@ -22,8 +23,8 @@ export default function Articles() {
             </h1>
             <p className="mt-4 text-gris-trait/70">Actualités, analyses et récits du QG des Héros.</p>
 
-            {erreur && <p className="mt-8 text-rouge-alerte">{erreur}</p>}
-            {chargement && <p className="mt-8 text-gris-trait/70">Chargement…</p>}
+            {erreur && <p role="alert" className="mt-8 text-rouge-alerte">{erreur}</p>}
+            {chargement && <Chargement />}
 
             {!chargement && articles.length === 0 && !erreur && (
                 <p className="mt-8 text-gris-trait/70">Aucun article publié pour l'instant.</p>

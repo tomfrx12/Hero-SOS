@@ -6,18 +6,19 @@ export interface Utilisateur {
     id: number
     email: string
     email_en_attente: string | null
-    nom: string
-    prenom: string
+    nom: string | null
+    prenom: string | null
     pseudo: string | null
-    civilite: string
-    date_de_naissance: string
-    numero_tel: string
+    civilite: string | null
+    date_de_naissance: string | null
+    numero_tel: string | null
     photo_profil: string | null
-    adresse: string
+    adresse: string | null
     complement_adresse: string | null
-    ville: string
-    code_postal: string
-    pays: string
+    ville: string | null
+    code_postal: string | null
+    pays: string | null
+    profil_complet: boolean
     newsletter: boolean
     role: Role
     statut_compte: "EnAttente" | "Actif" | "Desactive"
@@ -29,6 +30,8 @@ export interface Session {
     utilisateur: Utilisateur | null
     chargement: boolean
     connexion: (identifiant: string, motDePasse: string) => Promise<void>
+    // Connexion directe depuis une réponse d'inscription (token + utilisateur déjà disponibles)
+    connecter: (token: string, utilisateur: Utilisateur) => void
     deconnexion: () => void
     // Après une modification du profil, pour mettre à jour l'utilisateur affiché partout
     modifierUtilisateur: (utilisateur: Utilisateur) => void
