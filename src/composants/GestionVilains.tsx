@@ -51,6 +51,7 @@ export default function GestionVilains() {
     const [erreur, setErreur] = useState("")
     const [formulaire, setFormulaire] = useState<FormulaireVilain | null>(null)
     const [enEdition, setEnEdition] = useState<number | null>(null)
+    const [photoSelectionnee, setPhotoSelectionnee] = useState<File | null>(null)
     const [enSoumission, setEnSoumission] = useState(false)
     const [erreurFormulaire, setErreurFormulaire] = useState("")
     const [confirmationSuppression, setConfirmationSuppression] = useState<number | null>(null)
@@ -65,18 +66,21 @@ export default function GestionVilains() {
     function ouvrirCreation() {
         setEnEdition(null)
         setFormulaire(formulaireVide)
+        setPhotoSelectionnee(null)
         setErreurFormulaire("")
     }
 
     function ouvrirEdition(vilain: Vilain) {
         setEnEdition(vilain.id)
         setFormulaire(vilainVersFormulaire(vilain))
+        setPhotoSelectionnee(null)
         setErreurFormulaire("")
     }
 
     function fermerFormulaire() {
         setFormulaire(null)
         setEnEdition(null)
+        setPhotoSelectionnee(null)
         setErreurFormulaire("")
     }
 
@@ -86,13 +90,24 @@ export default function GestionVilains() {
         setEnSoumission(true)
         setErreurFormulaire("")
         try {
+            let vilainResultat: Vilain
             if (enEdition !== null) {
                 const data = await appelApi(`/vilains/${enEdition}`, "PUT", formulaire)
-                setVilains((prev) => prev.map((v) => (v.id === enEdition ? { ...v, ...data.vilain } : v)))
+                vilainResultat = data.vilain
+                setVilains((prev) => prev.map((v) => (v.id === enEdition ? { ...v, ...vilainResultat } : v)))
             } else {
                 const data = await appelApi("/vilains", "POST", formulaire)
-                setVilains((prev) => [...prev, { ...data.vilain, nombre_incidents: 0, nombre_arrestations: 0 }])
+                vilainResultat = { ...data.vilain, nombre_incidents: 0, nombre_arrestations: 0 }
+                setVilains((prev) => [...prev, vilainResultat])
             }
+
+            if (photoSelectionnee) {
+                const formData = new FormData()
+                formData.append("photo", photoSelectionnee)
+                const dataPhoto = await appelApi(`/vilains/${vilainResultat.id}/photo`, "POST", formData)
+                setVilains((prev) => prev.map((v) => (v.id === vilainResultat.id ? { ...v, photo: dataPhoto.vilain.photo } : v)))
+            }
+
             fermerFormulaire()
         } catch (err) {
             setErreurFormulaire((err as Error).message)
@@ -148,6 +163,27 @@ export default function GestionVilains() {
                             <X size={20} />
                         </button>
                     </div>
+
+                    <label className="flex flex-col gap-2">
+                        <span className="libelle">Photo de profil</span>
+                        <div className="flex items-center gap-4">
+                            {photoSelectionnee ? (
+                                <img src={URL.createObjectURL(photoSelectionnee)} alt="" className="size-16 rounded-full object-cover" />
+                            ) : enEdition !== null && vilains.find((v) => v.id === enEdition)?.photo ? (
+                                <img src={URL_API + vilains.find((v) => v.id === enEdition)!.photo!} alt="" className="size-16 rounded-full object-cover" />
+                            ) : (
+                                <div className="size-16 rounded-full bg-rouge-alerte/20 flex items-center justify-center text-rouge-alerte/50 text-xl font-black">
+                                    {formulaire.pseudo ? formulaire.pseudo[0].toUpperCase() : "?"}
+                                </div>
+                            )}
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setPhotoSelectionnee(e.target.files?.[0] ?? null)}
+                                className="text-sm text-gris-trait/70 file:mr-4 file:cursor-pointer file:rounded-full file:border file:border-gris-trait/70 file:bg-transparent file:px-4 file:py-1.5 file:text-sm file:font-semibold file:text-white hover:file:bg-white/5"
+                            />
+                        </div>
+                    </label>
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <Champ
