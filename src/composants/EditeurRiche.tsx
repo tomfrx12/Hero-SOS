@@ -13,7 +13,7 @@ export default function EditeurRiche({ value, onChange, hauteur = 500 }: Editeur
             value={value}
             onEditorChange={onChange}
             init={{
-                license_key: "gpl",
+                licenseKey: "gpl",
                 height: hauteur,
                 menubar: false,
                 plugins: [
