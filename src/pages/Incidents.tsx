@@ -162,11 +162,12 @@ export default function Incidents() {
                     </p>
                 </div>
 
-                <div className="flex gap-2">
+                <div role="group" aria-label="Filtrer les incidents" className="flex gap-2">
                     {[{ valeur: "Tous", libelle: "Tous" }, { valeur: "Signale", libelle: "Signalés" }, { valeur: "En_Cours", libelle: "En cours" }].map((bouton) => (
                         <button
                             key={bouton.valeur}
                             type="button"
+                            aria-pressed={filtre === bouton.valeur}
                             onClick={() => setFiltre(bouton.valeur)}
                             className={`cursor-pointer rounded-full px-5 py-2 font-display font-black italic uppercase transition-colors ${filtre === bouton.valeur ? "bg-rouge-alerte text-white glow-rouge" : "border border-gris-texte/60 text-gris-trait/70 hover:text-white"}`}
                         >
@@ -181,8 +182,8 @@ export default function Incidents() {
             <div className="grid gap-6 lg:grid-cols-[3fr_2fr]">
                 <div className="relative h-80 overflow-hidden rounded-2xl border border-gris-texte/40 lg:sticky lg:top-28 lg:h-[70vh]">
                     {chargement && (
-                        <span className="absolute top-3 right-3 z-10 flex items-center gap-2 rounded-full bg-noir/85 px-4 py-2 text-sm text-fond-clair">
-                            <LoaderCircle size={16} className="animate-spin" />
+                        <span role="status" aria-label="Actualisation de la carte" className="absolute top-3 right-3 z-10 flex items-center gap-2 rounded-full bg-noir/85 px-4 py-2 text-sm text-fond-clair">
+                            <LoaderCircle size={16} className="animate-spin" aria-hidden="true" />
                             Actualisation…
                         </span>
                     )}

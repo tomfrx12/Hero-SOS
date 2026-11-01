@@ -37,6 +37,7 @@ import Articles from './pages/Articles'
 import Article from './pages/Article'
 import Videotheque from './pages/Videotheque'
 import ProfilFilms from './pages/profil/ProfilFilms'
+import PageIntrouvable from './pages/PageIntrouvable'
 
 export default function App() {
   return (
@@ -93,6 +94,7 @@ export default function App() {
                   <Route path="articles/:id/modifier" element={<AdminArticle />} />
                 </Route>
               </Route>
+              <Route path="*" element={<PageIntrouvable />} />
             </Routes>
           </Layout>
         </SessionProvider>
