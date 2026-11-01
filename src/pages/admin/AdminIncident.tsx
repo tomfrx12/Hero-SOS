@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router"
 import AvisAdmin, { type Avis } from "../../composants/AvisAdmin"
 import Bouton from "../../composants/ui/Bouton"
 import { appelApi } from "../../services/api"
+import { nomComplet } from "../../services/comptes"
 import { couleursUrgence, libellesStatut, libellesUrgence, typesIncident, urgences, type StatutIncident, type Urgence } from "../../services/incidents"
 
 interface Incident {
@@ -15,13 +16,13 @@ interface Incident {
     ville: string
     code_postal: string
     createdAt: string
-    cree_par: { id: number, prenom: string, nom: string, email: string, numero_tel: string, verifiedAt: string | null }
+    cree_par: { id: number, prenom: string | null, nom: string | null, email: string, numero_tel: string | null, verifiedAt: string | null }
     interventions: {
         id: number
         statut: "En_Cours" | "Reussie" | "Echouee"
         debut: string
         super_heros: { id: number, pseudo: string | null }
-        notes: (Avis & { citoyen: { id: number, prenom: string, nom: string } })[]
+        notes: (Avis & { citoyen: { id: number, prenom: string | null, nom: string | null } })[]
     }[]
     vilains: { vilain: { pseudo: string } }[]
 }
@@ -153,10 +154,10 @@ export default function AdminIncident() {
                 <section className="flex flex-col gap-4 rounded-2xl border border-gris-texte/40 bg-graphite p-6">
                     <h2 className="text-2xl text-white">Signalé par</h2>
                     <p className="text-fond-clair">
-                        <Link to={`/dashboard-admin/utilisateurs/${incident.cree_par.id}`} className={styleLien}>{incident.cree_par.prenom} {incident.cree_par.nom}</Link>
+                        <Link to={`/dashboard-admin/utilisateurs/${incident.cree_par.id}`} className={styleLien}>{nomComplet(incident.cree_par)}</Link>
                         {incident.cree_par.verifiedAt && <span className="ml-2 text-sm text-cyan-neon">Citoyen vérifié</span>}
                     </p>
-                    <p className="text-sm! text-gris-trait/70">{incident.cree_par.email} — {incident.cree_par.numero_tel}</p>
+                    <p className="text-sm! text-gris-trait/70">{incident.cree_par.email}{incident.cree_par.numero_tel && ` — ${incident.cree_par.numero_tel}`}</p>
 
                     <h2 className="mt-2 text-2xl text-white">Vilains</h2>
                     <p className="text-fond-clair">
@@ -223,7 +224,7 @@ export default function AdminIncident() {
                                 contexte={
                                     <>
                                         Avis de{" "}
-                                        <Link to={`/dashboard-admin/utilisateurs/${note.citoyen.id}`} className={styleLien}>{note.citoyen.prenom} {note.citoyen.nom}</Link>
+                                        <Link to={`/dashboard-admin/utilisateurs/${note.citoyen.id}`} className={styleLien}>{nomComplet(note.citoyen)}</Link>
                                     </>
                                 }
                             />

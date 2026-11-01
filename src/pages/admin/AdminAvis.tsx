@@ -3,9 +3,10 @@ import { Link } from "react-router"
 import AvisAdmin, { type Avis } from "../../composants/AvisAdmin"
 import Filtres from "../../composants/Filtres"
 import { appelApi } from "../../services/api"
+import { nomComplet } from "../../services/comptes"
 
 interface AvisComplet extends Avis {
-    citoyen: { id: number, prenom: string, nom: string }
+    citoyen: { id: number, prenom: string | null, nom: string | null }
     intervention: { super_heros: { id: number, pseudo: string | null }, incident: { id: number, type: string, ville: string } }
 }
 
@@ -49,7 +50,7 @@ export default function AdminAvis() {
                             onChanger={(enLigne) => setAvis(avis.map((autre) => (autre.id === a.id ? { ...autre, enLigne } : autre)))}
                             contexte={
                                 <>
-                                    <Link to={`/dashboard-admin/utilisateurs/${a.citoyen.id}`} className={styleLien}>{a.citoyen.prenom} {a.citoyen.nom}</Link>
+                                    <Link to={`/dashboard-admin/utilisateurs/${a.citoyen.id}`} className={styleLien}>{nomComplet(a.citoyen)}</Link>
                                     {" pour "}
                                     <Link to={`/dashboard-admin/utilisateurs/${a.intervention.super_heros.id}`} className={styleLien}>{a.intervention.super_heros.pseudo}</Link>
                                     {" sur "}

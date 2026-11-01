@@ -2,11 +2,12 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router"
 import GrilleStats from "../../composants/GrilleStats"
 import { appelApi } from "../../services/api"
+import { nomComplet } from "../../services/comptes"
 
 interface Compte {
     id: number
-    prenom: string
-    nom: string
+    prenom: string | null
+    nom: string | null
     pseudo: string | null
     email: string
     email_en_attente: string | null
@@ -38,7 +39,7 @@ function ListeEnAttente({ titre, vide, comptes, detail }: { titre: string, vide:
                     {comptes.map((compte) => (
                         <li key={compte.id}>
                             <Link to={`/dashboard-admin/utilisateurs/${compte.id}`} className="block rounded-xl border border-gris-texte/40 bg-noir px-4 py-3 transition-colors hover:border-gris-trait/60">
-                                <p className="font-semibold text-white">{compte.prenom} {compte.nom}</p>
+                                <p className="font-semibold text-white">{nomComplet(compte)}</p>
                                 <p className="text-sm! text-gris-trait/70">{detail(compte)}</p>
                             </Link>
                         </li>

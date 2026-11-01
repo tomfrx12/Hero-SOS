@@ -4,20 +4,20 @@ import TagCompte from "../../composants/TagCompte"
 import Bouton from "../../composants/ui/Bouton"
 import { useSession } from "../../contexte/session"
 import { appelApi } from "../../services/api"
-import type { Compte } from "../../services/comptes"
+import { nomComplet, type Compte } from "../../services/comptes"
 import { libellesStatut, type StatutIncident } from "../../services/incidents"
 
 interface Utilisateur extends Compte {
     id: number
-    civilite: string
-    nom: string
-    prenom: string
+    civilite: string | null
+    nom: string | null
+    prenom: string | null
     pseudo: string | null
     email: string
-    numero_tel: string
-    adresse: string
-    code_postal: string
-    ville: string
+    numero_tel: string | null
+    adresse: string | null
+    code_postal: string | null
+    ville: string | null
     createdAt: string
     incidentsSignales: { id: number, type: string, status: StatutIncident, ville: string, createdAt: string }[]
     interventions: {
@@ -76,7 +76,7 @@ export default function AdminUtilisateur() {
 
             <div className="flex flex-col gap-3">
                 <h1 className="text-4xl text-white">
-                    {utilisateur.prenom} {utilisateur.nom}{utilisateur.pseudo && <span className="text-gris-trait/60"> — {utilisateur.pseudo}</span>}
+                    {nomComplet(utilisateur)}{utilisateur.pseudo && <span className="text-gris-trait/60"> — {utilisateur.pseudo}</span>}
                 </h1>
                 <TagCompte compte={utilisateur} />
             </div>
@@ -111,9 +111,9 @@ export default function AdminUtilisateur() {
                     <p className="text-gris-trait/60">Email</p>
                     <p className="break-all">{utilisateur.email}</p>
                     <p className="text-gris-trait/60">Téléphone</p>
-                    <p>{utilisateur.numero_tel}</p>
+                    <p>{utilisateur.numero_tel ?? "Non renseigné"}</p>
                     <p className="text-gris-trait/60">Adresse</p>
-                    <p>{utilisateur.adresse}, {utilisateur.code_postal} {utilisateur.ville}</p>
+                    <p>{utilisateur.adresse ? `${utilisateur.adresse}, ${utilisateur.code_postal} ${utilisateur.ville}` : "Non renseignée"}</p>
                     <p className="text-gris-trait/60">Inscrit le</p>
                     <p>{new Date(utilisateur.createdAt).toLocaleDateString("fr-FR")}</p>
                 </div>

@@ -2,16 +2,16 @@ import { useEffect, useState } from "react"
 import { Link, useSearchParams } from "react-router"
 import Filtres from "../../composants/Filtres"
 import TagCompte from "../../composants/TagCompte"
-import { estVerifie, type Compte } from "../../services/comptes"
+import { estVerifie, nomComplet, type Compte } from "../../services/comptes"
 import { appelApi } from "../../services/api"
 
 interface Utilisateur extends Compte {
     id: number
-    nom: string
-    prenom: string
+    nom: string | null
+    prenom: string | null
     pseudo: string | null
     email: string
-    ville: string
+    ville: string | null
     createdAt: string
 }
 
@@ -47,7 +47,7 @@ export default function AdminUtilisateurs() {
     // Recherche et rôle s'appliquent avant les onglets, pour que les compteurs suivent
     const utilisateursFiltres = utilisateurs.filter((u) =>
         (role === "" || u.role === role) &&
-        `${u.prenom} ${u.nom} ${u.pseudo ?? ""} ${u.email} ${u.ville}`.toLowerCase().includes(texte),
+        `${nomComplet(u)} ${u.pseudo ?? ""} ${u.email} ${u.ville ?? ""}`.toLowerCase().includes(texte),
     )
 
     const onglets = [
@@ -93,9 +93,9 @@ export default function AdminUtilisateurs() {
                             <Link to={`/dashboard-admin/utilisateurs/${u.id}`} className="flex flex-wrap items-center gap-4 px-5 py-4 transition-colors hover:bg-noir">
                                 <div className="min-w-0 flex-1">
                                     <p className="font-semibold text-white">
-                                        {u.prenom} {u.nom}{u.pseudo && <span className="text-gris-trait/60"> — {u.pseudo}</span>}
+                                        {nomComplet(u)}{u.pseudo && <span className="text-gris-trait/60"> — {u.pseudo}</span>}
                                     </p>
-                                    <p className="truncate text-sm! text-gris-trait/70">{u.email} — {u.ville}</p>
+                                    <p className="truncate text-sm! text-gris-trait/70">{u.email}{u.ville && ` — ${u.ville}`}</p>
                                 </div>
                                 <TagCompte compte={u} />
                                 <span className="text-gris-trait/40">›</span>
