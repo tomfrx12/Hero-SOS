@@ -10,10 +10,10 @@ export default function EditeurRiche({ value, onChange, hauteur = 500 }: Editeur
     return (
         <Editor
             tinymceScriptSrc="/tinymce/tinymce.min.js"
+            licenseKey="gpl"
             value={value}
             onEditorChange={onChange}
             init={{
-                licenseKey: "gpl",
                 height: hauteur,
                 menubar: false,
                 plugins: [
