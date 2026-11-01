@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react"
+import { Shield } from "lucide-react"
 import Champ from "../../composants/Champ"
 import ChampAdresse, { type Adresse } from "../../composants/ChampAdresse"
 import Bouton from "../../composants/ui/Bouton"
@@ -26,7 +27,7 @@ function Bloc({ titre, message, erreur, children }: { titre: string, message: st
 }
 
 export default function ProfilInformations() {
-    const { utilisateur, modifierUtilisateur } = useSession()
+    const { utilisateur, modifierUtilisateur, deconnexion } = useSession()
 
     const [retourPhoto, setRetourPhoto] = useState({ message: "", erreur: "" })
 
@@ -46,6 +47,10 @@ export default function ProfilInformations() {
 
     const [motsDePasse, setMotsDePasse] = useState({ ancien: "", nouveau: "", confirmation: "" })
     const [retourMotDePasse, setRetourMotDePasse] = useState({ message: "", erreur: "" })
+
+    const [pseudo, setPseudo] = useState("")
+    const [retourCandidature, setRetourCandidature] = useState({ message: "", erreur: "" })
+    const [candidatureEnvoyee, setCandidatureEnvoyee] = useState(false)
 
     if (!utilisateur) return null
 
@@ -94,6 +99,18 @@ export default function ProfilInformations() {
             setRetourEmail({ message: "Ta demande a été envoyée, un administrateur doit la valider", erreur: "" })
         } catch (err) {
             setRetourEmail({ message: "", erreur: (err as Error).message })
+        }
+    }
+
+    async function envoyerCandidature(e: FormEvent) {
+        e.preventDefault()
+        try {
+            await appelApi("/moi/candidature-heros", "POST", { pseudo })
+            setCandidatureEnvoyee(true)
+            setRetourCandidature({ message: "", erreur: "" })
+            deconnexion()
+        } catch (err) {
+            setRetourCandidature({ message: "", erreur: (err as Error).message })
         }
     }
 
@@ -175,6 +192,48 @@ export default function ProfilInformations() {
                     <Bouton type="submit" className="self-start">Changer le mot de passe</Bouton>
                 </form>
             </Bloc>
+
+            {utilisateur.role === "Citoyens" && (
+                <section className="flex flex-col gap-5 overflow-hidden rounded-2xl border border-violet-neon/40 bg-graphite text-left sm:p-8 p-6">
+                    <div className="flex items-center gap-3">
+                        <Shield size={22} className="shrink-0 text-violet-neon" />
+                        <h2 className="font-display text-2xl font-black italic uppercase text-white">Devenir super-héros</h2>
+                    </div>
+
+                    {candidatureEnvoyee ? (
+                        <div className="flex flex-col gap-3">
+                            <p className="text-gris-trait/80">
+                                Ta candidature a été envoyée ! Un administrateur va l'examiner prochainement.<br />
+                                Tu recevras un mail dès qu'une décision aura été prise.
+                            </p>
+                            <p className="text-sm text-gris-trait/60">Tu as été déconnecté — reconnecte-toi une fois ta candidature validée.</p>
+                        </div>
+                    ) : (
+                        <>
+                            <p className="text-gris-trait/70">
+                                Tu veux intervenir sur le terrain et rejoindre l'équipe des super-héros ? Choisis ton pseudo et envoie ta candidature. Un administrateur l'examinera et te contactera par email.
+                            </p>
+                            <form onSubmit={envoyerCandidature} className="flex flex-col gap-5">
+                                <Champ
+                                    label="Ton pseudo de super-héros"
+                                    placeholder="Flamme Bleue, Titanix…"
+                                    required
+                                    value={pseudo}
+                                    onChange={(e) => setPseudo(e.target.value)}
+                                />
+                                {retourCandidature.erreur && (
+                                    <p role="alert" className="rounded-xl border border-rouge-alerte/50 bg-rouge-alerte/15 px-4 py-3 text-sm! text-fond-clair">
+                                        {retourCandidature.erreur}
+                                    </p>
+                                )}
+                                <Bouton type="submit" icone={Shield} className="self-start">
+                                    Envoyer ma candidature
+                                </Bouton>
+                            </form>
+                        </>
+                    )}
+                </section>
+            )}
         </div>
     )
 }

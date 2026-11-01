@@ -73,7 +73,7 @@ export default function Index() {
     const { utilisateur } = useSession()
     const peutSignaler = !utilisateur || rolesSignalement.includes(utilisateur.role)
     // Non-connectés → inscription rapide (email + mdp) ; connectés → formulaire direct
-    const lienSignalement = !utilisateur ? "/inscription-rapide" : "/profil/signaler-incidents"
+    const lienSignalement = !utilisateur ? "/inscription" : "/profil/signaler-incidents"
     const fondRef = useRef<HTMLImageElement>(null)
     const titreRef = useRef<HTMLDivElement>(null)
 

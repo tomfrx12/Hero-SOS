@@ -7,7 +7,6 @@ import RouteProtegee from './composants/RouteProtegee'
 import RouteNonConnecte from './composants/RouteNonConnecte'
 import Index from './pages/Index'
 import Connexion from './pages/Connexion'
-import Inscription from './pages/Inscription'
 import MotDePasseOublie from './pages/MotDePasseOublie'
 import SuperHeros from './pages/SuperHeros'
 import SuperVilains from './pages/SuperVilains'
@@ -37,6 +36,8 @@ import Articles from './pages/Articles'
 import Article from './pages/Article'
 import Videotheque from './pages/Videotheque'
 import ProfilFilms from './pages/profil/ProfilFilms'
+import ProfilVilains from './pages/profil/ProfilVilains'
+import AdminVilains from './pages/admin/AdminVilains'
 import PageIntrouvable from './pages/PageIntrouvable'
 import InscriptionRapide from './pages/InscriptionRapide'
 import CompletionProfil from './pages/profil/CompletionProfil'
@@ -63,8 +64,7 @@ export default function App() {
 
               <Route element={<RouteNonConnecte />}>
                 <Route path="/connexion" element={<Connexion />} />
-                <Route path="/inscription" element={<Inscription />} />
-                <Route path="/inscription-rapide" element={<InscriptionRapide />} />
+                <Route path="/inscription" element={<InscriptionRapide />} />
                 <Route path="/reinitialiser-le-mot-de-passe" element={<MotDePasseOublie />} />
               </Route>
 
@@ -80,6 +80,7 @@ export default function App() {
                   <Route element={<RouteProtegee roles={["SuperHeros"]} />}>
                     <Route path="interventions" element={<ProfilInterventions />} />
                     <Route path="films" element={<ProfilFilms />} />
+                    <Route path="vilains" element={<ProfilVilains />} />
                     <Route path="statistiques" element={<ProfilStatistiques />} />
                     <Route path="reputation" element={<ProfilReputation />} />
                   </Route>
@@ -96,6 +97,7 @@ export default function App() {
                   <Route path="avis" element={<AdminAvis />} />
                   <Route path="films" element={<AdminFilms />} />
                   <Route path="newsletter" element={<AdminNewsletter />} />
+                  <Route path="vilains" element={<AdminVilains />} />
                   <Route path="articles" element={<AdminArticles />} />
                   <Route path="articles/nouveau" element={<AdminArticle />} />
                   <Route path="articles/:id/modifier" element={<AdminArticle />} />

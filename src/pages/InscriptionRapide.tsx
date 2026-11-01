@@ -92,8 +92,6 @@ export default function InscriptionRapide() {
                 <p className="text-sm! text-gris-trait/70">
                     Déjà un compte ?{" "}
                     <Link to="/connexion" className="font-semibold text-white hover:underline">Se connecter</Link>
-                    {" "}·{" "}
-                    <Link to="/inscription" className="font-semibold text-white hover:underline">Inscription complète</Link>
                 </p>
             </div>
         </section>
