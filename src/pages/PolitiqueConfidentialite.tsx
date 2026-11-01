@@ -11,7 +11,7 @@ export default function PolitiqueConfidentialite() {
             <header>
                 <h1 className="text-5xl text-white">Politique de confidentialité</h1>
                 <p className="mt-2 text-gris-trait/70">
-                    Dernière mise à jour : <time dateTime="2026-10-31">31 octobre 2026</time>
+                    Dernière mise à jour : <time dateTime="2026-11-01">1er novembre 2026</time>
                 </p>
             </header>
 
@@ -30,11 +30,11 @@ export default function PolitiqueConfidentialite() {
 
             <SectionLegale numero={2} titre="Données collectées">
                 <ul className={styleListe}>
-                    <li><strong className="text-white">Compte :</strong> civilité, nom, prénom, pseudo (super-héros), date de naissance, adresse email, numéro de téléphone, adresse postale et photo de profil.</li>
+                    <li><strong className="text-white">Compte :</strong> adresse email à l'inscription, puis civilité, nom, prénom, date de naissance, numéro de téléphone, adresse postale et photo de profil quand tu complètes ton profil, et pseudo si tu deviens super-héros.</li>
                     <li><strong className="text-white">Connexion :</strong> mot de passe, enregistré uniquement sous forme chiffrée (hachée).</li>
                     <li><strong className="text-white">Signalements :</strong> type d'incident, description, adresse et position sur la carte.</li>
                     <li><strong className="text-white">Interventions et avis :</strong> interventions des super-héros, notes et commentaires laissés par les citoyens.</li>
-                    <li><strong className="text-white">Newsletter :</strong> ton choix d'y être inscrit ou non.</li>
+                    <li><strong className="text-white">Newsletter :</strong> ton adresse email si tu t'inscris sans compte, sinon ton choix d'y être inscrit ou non.</li>
                 </ul>
             </SectionLegale>
 
@@ -44,7 +44,7 @@ export default function PolitiqueConfidentialite() {
                     <li>transmettre les incidents aux super-héros et aux administrateurs : nécessaire au fonctionnement du service ;</li>
                     <li>t'envoyer les emails liés au service (validation du compte, suivi d'un incident, mot de passe oublié) : nécessaire au service ;</li>
                     <li>modérer les signalements et les avis : intérêt légitime à garder un site fiable ;</li>
-                    <li>t'envoyer la newsletter : seulement avec ton accord, que tu peux retirer à tout moment depuis ton profil.</li>
+                    <li>t'envoyer la newsletter : seulement avec ton accord, que tu peux retirer à tout moment depuis ton profil ou, sans compte, en nous écrivant.</li>
                 </ul>
             </SectionLegale>
 
@@ -54,7 +54,7 @@ export default function PolitiqueConfidentialite() {
                     <li>les <strong className="text-white">super-héros</strong>, qui voient les informations d'un incident (type, description, adresse) pour pouvoir intervenir ;</li>
                     <li>les <strong className="text-white">visiteurs</strong>, qui voient les incidents en cours sur la carte, sans l'identité de la personne qui les a signalés, ainsi que les avis en ligne sur les super-héros.</li>
                 </ul>
-                <p className={styleTexte}>Les données ne sont jamais vendues ni cédées à des tiers.</p>
+                <p className={styleTexte}>Les emails sont envoyés par notre prestataire Brevo, qui reçoit ton adresse email pour cela. Les données ne sont jamais vendues ni cédées à des tiers.</p>
             </SectionLegale>
 
             <SectionLegale numero={5} titre="Durée de conservation">
