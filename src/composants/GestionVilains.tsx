@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type ChangeEvent } from "react"
 import { Pencil, Trash2, Plus, X, Check } from "lucide-react"
-import { appelApi } from "../services/api"
+import { appelApi, URL_API } from "../services/api"
 import Champ from "./Champ"
 
 interface Vilain {
@@ -11,6 +11,7 @@ interface Vilain {
     specialite: string
     secteur: string
     description: string | null
+    photo: string | null
     nombre_incidents: number
     nombre_arrestations: number
 }
@@ -97,6 +98,19 @@ export default function GestionVilains() {
             setErreurFormulaire((err as Error).message)
         } finally {
             setEnSoumission(false)
+        }
+    }
+
+    async function uploaderPhoto(id: number, e: ChangeEvent<HTMLInputElement>) {
+        const fichier = e.target.files?.[0]
+        if (!fichier) return
+        const formData = new FormData()
+        formData.append("photo", fichier)
+        try {
+            const data = await appelApi(`/vilains/${id}/photo`, "POST", formData)
+            setVilains((prev) => prev.map((v) => (v.id === id ? { ...v, photo: data.vilain.photo } : v)))
+        } catch (err) {
+            setErreur((err as Error).message)
         }
     }
 
@@ -202,6 +216,22 @@ export default function GestionVilains() {
                 <ul className="flex flex-col divide-y divide-gris-texte/30 overflow-hidden rounded-2xl border border-gris-texte/40 bg-graphite">
                     {vilains.map((vilain) => (
                         <li key={vilain.id} className="flex items-center gap-4 px-5 py-4">
+                            <label className="relative shrink-0 cursor-pointer" title="Changer la photo">
+                                {vilain.photo ? (
+                                    <img src={URL_API + vilain.photo} alt="" className="size-12 rounded-full object-cover" />
+                                ) : (
+                                    <div className="size-12 rounded-full bg-rouge-alerte/20 flex items-center justify-center text-rouge-alerte/60 text-lg font-black">
+                                        {vilain.pseudo[0].toUpperCase()}
+                                    </div>
+                                )}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="sr-only"
+                                    onChange={(e) => uploaderPhoto(vilain.id, e)}
+                                />
+                            </label>
+
                             <div className="min-w-0 flex-1">
                                 <p className="font-semibold text-white">{vilain.pseudo}</p>
                                 <p className="text-sm text-gris-trait/60">
