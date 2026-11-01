@@ -36,6 +36,8 @@ import AdminArticle from './pages/admin/AdminArticle'
 import NewsletterDesinscrire from './pages/NewsletterDesinscrire'
 import Articles from './pages/Articles'
 import Article from './pages/Article'
+import Videotheque from './pages/Videotheque'
+import ProfilFilms from './pages/profil/ProfilFilms'
 
 export default function App() {
   return (
@@ -53,6 +55,7 @@ export default function App() {
               <Route path="/newsletter/desinscrire" element={<NewsletterDesinscrire />} />
               <Route path="/blog" element={<Articles />} />
               <Route path="/blog/:id" element={<Article />} />
+              <Route path="/videotheque" element={<Videotheque />} />
 
               <Route element={<RouteNonConnecte />}>
                 <Route path="/connexion" element={<Connexion />} />
@@ -70,6 +73,7 @@ export default function App() {
                   </Route>
                   <Route element={<RouteProtegee roles={["SuperHeros"]} />}>
                     <Route path="interventions" element={<ProfilInterventions />} />
+                    <Route path="films" element={<ProfilFilms />} />
                     <Route path="statistiques" element={<ProfilStatistiques />} />
                     <Route path="reputation" element={<ProfilReputation />} />
                   </Route>
