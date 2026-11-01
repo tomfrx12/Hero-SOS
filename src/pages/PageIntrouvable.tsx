@@ -1,4 +1,3 @@
-import { Link } from "react-router"
 import Bouton from "../composants/ui/Bouton"
 
 export default function PageIntrouvable() {
