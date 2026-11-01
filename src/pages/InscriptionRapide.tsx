@@ -78,6 +78,15 @@ export default function InscriptionRapide() {
                         onChange={(e) => setMotDePasse(e.target.value)}
                     />
 
+                    <label className="flex cursor-pointer items-start gap-3 text-sm text-gris-trait/80">
+                        <input type="checkbox" required className="mt-1 size-4 shrink-0 accent-rouge-alerte" />
+                        <span>
+                            J'ai lu et j'accepte la{" "}
+                            <Link to="/politique-de-confidentialite" target="_blank" className="text-white underline underline-offset-4 hover:text-rouge-alerte">politique de confidentialité</Link>
+                            {" "}et le traitement de mes données pour la gestion de mon compte.
+                        </span>
+                    </label>
+
                     {erreur && (
                         <p role="alert" className="rounded-xl border border-rouge-alerte/50 bg-rouge-alerte/15 px-4 py-3 text-sm! text-fond-clair">
                             {erreur}
