@@ -42,10 +42,10 @@ export default function Videotheque() {
                                 <img
                                     src={film.affiche_url}
                                     alt={film.titre}
-                                    className="aspect-[2/3] w-full object-cover"
+                                    className="aspect-2/3 w-full object-cover"
                                 />
                             ) : (
-                                <div className="flex aspect-[2/3] w-full items-center justify-center bg-noir/60 text-gris-trait/40">
+                                <div className="flex aspect-2/3 w-full items-center justify-center bg-noir/60 text-gris-trait/40">
                                     Pas d'affiche
                                 </div>
                             )}
