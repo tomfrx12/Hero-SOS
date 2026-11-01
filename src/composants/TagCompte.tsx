@@ -3,7 +3,6 @@ import { estVerifie, type Compte } from "../services/comptes"
 const libellesRole = {
     Citoyens: "Citoyen",
     SuperHeros: "Super-héros",
-    SuperVillains: "Super-vilain",
     Administrateurs: "Administrateur",
 }
 

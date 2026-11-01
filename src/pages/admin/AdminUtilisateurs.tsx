@@ -76,7 +76,6 @@ export default function AdminUtilisateurs() {
                     <option value="">Tous les rôles</option>
                     <option value="Citoyens">Citoyens</option>
                     <option value="SuperHeros">Super-héros</option>
-                    <option value="SuperVillains">Super-vilains</option>
                     <option value="Administrateurs">Administrateurs</option>
                 </select>
             </div>
